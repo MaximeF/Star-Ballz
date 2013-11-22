@@ -25,14 +25,14 @@ public class MainMenu extends Application
 	@Override
 	public void start(Stage stage) throws Exception 
 	{
-		Scene scene = new Scene(root, 600, 600 , Color.WHITE);
+		Scene scene = new Scene(root, 485,395, Color.WHITE);
 		stage.setResizable(false);
-		stage.setTitle("Star Ballz");
+		stage.setTitle("Carte de Noël - Francis Chandonnet");
+		stage.setScene(scene);
 		this.bPane.setTop(this.l);
 		this.root.getChildren().add(bPane);
 		stage.setScene(scene);
 		stage.show();
-		
 	}
 	
 	public static void main(String[] args) 
