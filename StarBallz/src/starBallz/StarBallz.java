@@ -28,6 +28,8 @@ public class StarBallz extends Application
 	private UserPlatform userPlatform = null;
 	private int distanceFromBottom = 20;
 	List<Ballz> ballzList = null;
+	private boolean isLeftDown = false;
+	private boolean isRightDown = false;
 	
 	public static void main(String[] args)
 	{
@@ -42,6 +44,7 @@ public class StarBallz extends Application
 		this.root = new Group();
 	    this.scene = new Scene(root, 500, 1000, Color.WHITE);
 		this.scene.setOnKeyPressed(new arrowKeyListener());
+		this.scene.setOnKeyReleased(new arrowKeyReleaseListener());
 		this.stage.setTitle("StarBallz");
 		this.stage.setResizable(false);
 		this.createBallz();
@@ -51,22 +54,39 @@ public class StarBallz extends Application
 		this.starBallzTimer = new Timer();
 		this.starBallzTimer.schedule(new StarBallzTimer(), 1, 1);
 	}
+	
+	private class arrowKeyReleaseListener implements EventHandler<KeyEvent>
+	{
+		public void handle(KeyEvent e)
+		{
+			if (e.getCode()==KeyCode.LEFT)
+			{
+				isLeftDown = false;
+			}
+			else if (e.getCode()==KeyCode.RIGHT)
+			{
+				isRightDown = false;
+			}
+		}
+		
+	}
+	
 	private class arrowKeyListener implements EventHandler<KeyEvent>
 	{
 		public void handle(KeyEvent e)
 		{
 			if (e.getCode()==KeyCode.LEFT)
 			{
+				isLeftDown = true;
 				if (StarBallz.this.userPlatform.getX()>0)
 				{
-					StarBallz.this.userPlatform.moveLeft();
 				}
 			}
 			else if (e.getCode()==KeyCode.RIGHT)
 			{
+				isRightDown = true;
 				if (StarBallz.this.userPlatform.getX()+StarBallz.this.userPlatform.getWidth()<StarBallz.this.scene.getWidth())
 				{
-					StarBallz.this.userPlatform.moveRight();
 				}
 			}
 		}
@@ -80,20 +100,26 @@ public class StarBallz extends Application
 	
 	public void createBallz()
 	{
-		this.testBallz = new Ballz(this.scene.getWidth()/2,-10,20,-1,1,Color.BLUE);
+		this.testBallz = new Ballz(this.scene.getWidth()/2,-10,10,-1,1,Color.BLUE);
 		root.getChildren().add(this.testBallz);
 	}
 	
 	private class StarBallzPlatformTimer extends TimerTask 
 	{
-		
 		@Override		
 		public void run()
 		{
 			Platform.runLater(new Runnable() {
 				public void run() 
 				{
-				
+					if (isLeftDown)
+					{
+						userPlatform.moveLeft();
+					}
+					if (isRightDown)
+					{
+						userPlatform.moveRight();
+					}
 				}
 			});
 		}		
@@ -107,6 +133,22 @@ public class StarBallz extends Application
 			Platform.runLater(new Runnable() {
 				public void run() 
 				{
+					if (StarBallz.this.userPlatform.getX()>0)
+					{
+						if (isLeftDown)
+						{
+							userPlatform.moveLeft();
+						}
+					}
+					
+					if (StarBallz.this.userPlatform.getX()+StarBallz.this.userPlatform.getWidth()<StarBallz.this.scene.getWidth())
+					{
+						if (isRightDown)
+						{
+							userPlatform.moveRight();
+						}
+					}
+					
 					for (Ballz b : StarBallz.this.ballzList)
 					{
 						
@@ -122,9 +164,9 @@ public class StarBallz extends Application
 									StarBallz.this.testBallz.bottomRebound();
 								}
 								//else
-								//{
-								//	StarBallz.this.testBallz.sideRebound();
-								//}
+								{
+									//StarBallz.this.testBallz.sideRebound();
+								}
 							}
 						}
 						StarBallz.this.testBallz.move();
