@@ -1,5 +1,6 @@
 package starBallz;
 
-public class Game {
+public class Game 
+{
 
 }

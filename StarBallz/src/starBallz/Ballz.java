@@ -16,8 +16,8 @@ public class Ballz extends Circle{
 
 	public void move()
 	{
-		this.setCenterX(this.xVel);
-		this.setCenterY(this.yVel);
+		this.setCenterX(this.getCenterX()+this.xVel);
+		this.setCenterY(this.getCenterY()+this.yVel);
 
 	}
 
