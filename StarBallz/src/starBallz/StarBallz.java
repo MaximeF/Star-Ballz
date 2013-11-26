@@ -3,6 +3,7 @@ package starBallz;
 import java.awt.event.KeyAdapter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Timer;
 import starBallz.UserPlatform;
 import java.util.TimerTask;
@@ -51,8 +52,8 @@ public class StarBallz extends Application
 		this.createPlatform();
 		this.stage.setScene(scene);
 		this.stage.show();
-		this.starBallzTimer = new Timer();
-		this.starBallzTimer.schedule(new StarBallzTimer(), 1, 1);
+		Timer starBallzTimer = new Timer();
+		starBallzTimer.schedule(new StarBallzTimer(), 1, 1);
 	}
 	
 	private class arrowKeyReleaseListener implements EventHandler<KeyEvent>
@@ -100,7 +101,10 @@ public class StarBallz extends Application
 	
 	public void createBallz()
 	{
-		this.testBallz = new Ballz(this.scene.getWidth()/2,-10,10,-1,1,Color.BLUE);
+		Random random = new Random();
+		double randomX = (double)random.nextInt((int)this.scene.getWidth()-20) + 10;
+		double randomVelX = (((double)random.nextInt(199) + 1)/(double)100)* (double)Math.pow(-1,randomX);;
+		this.testBallz = new Ballz(this.scene.getWidth()/2,-10,20,1,1,Color.BLUE);
 		root.getChildren().add(this.testBallz);
 	}
 	

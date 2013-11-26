@@ -5,7 +5,7 @@ import javafx.scene.shape.Rectangle;
 
 public class UserPlatform extends Rectangle
 {
-	public int MOVE_SPEED = 1;
+	public int MOVE_SPEED = 2;
 	
 	public UserPlatform(double xPos,double yPos,int width,double height,Paint color)
 	{
