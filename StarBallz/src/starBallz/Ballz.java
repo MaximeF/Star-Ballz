@@ -2,7 +2,8 @@ package starBallz;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.*;
 
-public class Ballz extends Circle{
+public class Ballz extends Circle implements Bouncy , Explosive
+{
 
 	double xVel;
 	double yVel;
@@ -21,11 +22,13 @@ public class Ballz extends Circle{
 
 	}
 
+	@Override
 	public void sideRebound()
 	{
 		this.xVel = -(this.xVel);
 	}
-
+	
+	@Override
 	public void bottomRebound()
 	{
 		this.yVel = -(this.yVel);

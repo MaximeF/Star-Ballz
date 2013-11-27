@@ -7,6 +7,8 @@ import java.util.Random;
 import java.util.Timer;
 import starBallz.UserPlatform;
 import java.util.TimerTask;
+
+import particle.engine.Engine;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -14,6 +16,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -43,9 +46,10 @@ public class StarBallz extends Application
 		this.ballzList = new ArrayList<Ballz>();
 		this.stage = stage;
 		this.root = new Group();
-	    this.scene = new Scene(root, 500, 1000, Color.WHITE);
+	    this.scene = new Scene(root, 500, 1000, Color.BLACK);
 		this.scene.setOnKeyPressed(new arrowKeyListener());
 		this.scene.setOnKeyReleased(new arrowKeyReleaseListener());
+		this.scene.setOnMouseMoved(new mouseMouvementListener());
 		this.stage.setTitle("StarBallz");
 		this.stage.setResizable(false);
 		this.createBallz();
@@ -72,6 +76,19 @@ public class StarBallz extends Application
 		
 	}
 	
+	private class mouseMouvementListener implements EventHandler<MouseEvent>
+	{
+		public void handle(MouseEvent e)
+		{
+			if (e.getSceneX()<StarBallz.this.scene.getWidth()-StarBallz.this.userPlatform.getWidth())
+			{
+				StarBallz.this.userPlatform.setX(e.getSceneX()); 
+			}
+			
+		}
+		
+	}
+	
 	private class arrowKeyListener implements EventHandler<KeyEvent>
 	{
 		public void handle(KeyEvent e)
@@ -79,16 +96,10 @@ public class StarBallz extends Application
 			if (e.getCode()==KeyCode.LEFT)
 			{
 				isLeftDown = true;
-				if (StarBallz.this.userPlatform.getX()>0)
-				{
-				}
 			}
 			else if (e.getCode()==KeyCode.RIGHT)
 			{
 				isRightDown = true;
-				if (StarBallz.this.userPlatform.getX()+StarBallz.this.userPlatform.getWidth()<StarBallz.this.scene.getWidth())
-				{
-				}
 			}
 		}
 		
@@ -102,9 +113,9 @@ public class StarBallz extends Application
 	public void createBallz()
 	{
 		Random random = new Random();
-		double randomX = (double)random.nextInt((int)this.scene.getWidth()-20) + 10;
-		double randomVelX = (((double)random.nextInt(199) + 1)/(double)100)* (double)Math.pow(-1,randomX);;
-		this.testBallz = new Ballz(this.scene.getWidth()/2,-10,20,1,1,Color.BLUE);
+		double randomX = (double)random.nextInt((int)this.scene.getWidth()-10) + 30;
+		double randomVelX = (((double)random.nextInt(99) + 1)/(double)100)* (double)Math.pow(-1,randomX);;
+		this.testBallz = new Ballz(randomX,-10,20,randomVelX,5,Color.BLUE);
 		root.getChildren().add(this.testBallz);
 	}
 	
@@ -166,6 +177,8 @@ public class StarBallz extends Application
 								if (StarBallz.this.testBallz.getCenterX()>StarBallz.this.userPlatform.getX()-StarBallz.this.testBallz.getRadius()&&StarBallz.this.testBallz.getCenterX()<StarBallz.this.userPlatform.getX()+StarBallz.this.userPlatform.getWidth()+StarBallz.this.testBallz.getRadius())
 								{
 									StarBallz.this.testBallz.bottomRebound();
+									//StarBallz.this.root.getChildren().add( new Engine((int) StarBallz.this.testBallz.getCenterX(), (int) (StarBallz.this.testBallz.getCenterY() + StarBallz.this.testBallz.getRadius()), 500));
+									
 								}
 								//else
 								{
@@ -177,6 +190,7 @@ public class StarBallz extends Application
 						if (StarBallz.this.testBallz.getCenterX()-StarBallz.this.testBallz.getRadius()<=0||StarBallz.this.testBallz.getCenterX()+StarBallz.this.testBallz.getRadius()>= StarBallz.this.scene.getWidth())
 						{
 							StarBallz.this.testBallz.sideRebound();
+							//StarBallz.this.root.getChildren().add( new Engine((int) (StarBallz.this.testBallz.getCenterX() + StarBallz.this.testBallz.getRadius()), (int) StarBallz.this.testBallz.getCenterY(), 500));
 						}
 						
 						if (StarBallz.this.testBallz.getCenterY()+StarBallz.this.testBallz.getRadius()<=0||StarBallz.this.testBallz.getCenterY()-StarBallz.this.testBallz.getRadius()>=StarBallz.this.scene.getHeight())
