@@ -28,12 +28,12 @@ public class StarBallz extends Application
 	private Ballz testBallz = null;
 	private Stage stage = null;
 	private Scene scene = null;
-	private Timer starBallzTimer = null;
 	private UserPlatform userPlatform = null;
 	private int distanceFromBottom = 20;
-	List<Ballz> ballzList = null;
+	ArrayList<Ballz> ballzList = new ArrayList<Ballz>();
 	private boolean isLeftDown = false;
 	private boolean isRightDown = false;
+	private Engine engine = new Engine();
 	
 	public static void main(String[] args)
 	{
@@ -46,12 +46,14 @@ public class StarBallz extends Application
 		this.ballzList = new ArrayList<Ballz>();
 		this.stage = stage;
 		this.root = new Group();
-	    this.scene = new Scene(root, 500, 1000, Color.BLACK);
+	    this.scene = new Scene(root, 500, 800, Color.BLACK);
 		this.scene.setOnKeyPressed(new arrowKeyListener());
 		this.scene.setOnKeyReleased(new arrowKeyReleaseListener());
 		this.scene.setOnMouseMoved(new mouseMouvementListener());
 		this.stage.setTitle("StarBallz");
 		this.stage.setResizable(false);
+		this.root.getChildren().add(this.engine);
+		this.createBallz();
 		this.createBallz();
 		this.createPlatform();
 		this.stage.setScene(scene);
@@ -73,7 +75,6 @@ public class StarBallz extends Application
 				isRightDown = false;
 			}
 		}
-		
 	}
 	
 	private class mouseMouvementListener implements EventHandler<MouseEvent>
@@ -84,9 +85,7 @@ public class StarBallz extends Application
 			{
 				StarBallz.this.userPlatform.setX(e.getSceneX()); 
 			}
-			
 		}
-		
 	}
 	
 	private class arrowKeyListener implements EventHandler<KeyEvent>
@@ -107,37 +106,17 @@ public class StarBallz extends Application
 	public void createPlatform()
 	{
 		this.userPlatform = new UserPlatform(this.scene.getWidth()/2-(100/2),this.scene.getHeight()-this.distanceFromBottom,100,15,Color.RED);
-		this.root.getChildren().add(this.userPlatform);
+		this.engine.getChildren().add(this.userPlatform);
 	}
 	
 	public void createBallz()
 	{
 		Random random = new Random();
-		double randomX = (double)random.nextInt((int)this.scene.getWidth()-10) + 30;
+		double randomX = (double)random.nextInt((int)this.scene.getWidth()-40) + 20;
 		double randomVelX = (((double)random.nextInt(99) + 1)/(double)100)* (double)Math.pow(-1,randomX);;
-		this.testBallz = new Ballz(randomX,-10,20,randomVelX,5,Color.BLUE);
-		root.getChildren().add(this.testBallz);
-	}
-	
-	private class StarBallzPlatformTimer extends TimerTask 
-	{
-		@Override		
-		public void run()
-		{
-			Platform.runLater(new Runnable() {
-				public void run() 
-				{
-					if (isLeftDown)
-					{
-						userPlatform.moveLeft();
-					}
-					if (isRightDown)
-					{
-						userPlatform.moveRight();
-					}
-				}
-			});
-		}		
+		Ballz ballz = new Ballz(randomX,-10,20,randomVelX,0.5,Color.BLUE);
+		this.ballzList.add(ballz);
+		root.getChildren().add(ballz);
 	}
 	
 	private class StarBallzTimer extends TimerTask
@@ -163,43 +142,56 @@ public class StarBallz extends Application
 							userPlatform.moveRight();
 						}
 					}
-					
+					ArrayList<Ballz> listToDelete = new ArrayList<Ballz>();
+					int i = 0;
+					while (i < StarBallz.this.ballzList.size()-1)
+					{
+						Ballz b = StarBallz.this.ballzList.get(i);
+						
+						i++;
+					}
 					for (Ballz b : StarBallz.this.ballzList)
 					{
-						
-					}
-					if (StarBallz.this.testBallz != null)
-					{
-						if (StarBallz.this.testBallz.intersects(StarBallz.this.userPlatform.getBoundsInLocal()))
+						if (b != null)
 						{
-							if (StarBallz.this.testBallz.getCenterY()+StarBallz.this.testBallz.getRadius()==StarBallz.this.userPlatform.getY())
+							if (b.intersects(StarBallz.this.userPlatform.getBoundsInLocal()))
 							{
-								if (StarBallz.this.testBallz.getCenterX()>StarBallz.this.userPlatform.getX()-StarBallz.this.testBallz.getRadius()&&StarBallz.this.testBallz.getCenterX()<StarBallz.this.userPlatform.getX()+StarBallz.this.userPlatform.getWidth()+StarBallz.this.testBallz.getRadius())
+								if (b.getCenterY()+b.getRadius()==StarBallz.this.userPlatform.getY())
 								{
-									StarBallz.this.testBallz.bottomRebound();
-									//StarBallz.this.root.getChildren().add( new Engine((int) StarBallz.this.testBallz.getCenterX(), (int) (StarBallz.this.testBallz.getCenterY() + StarBallz.this.testBallz.getRadius()), 500));
-									
-								}
-								//else
-								{
-									//StarBallz.this.testBallz.sideRebound();
+									if (b.getCenterX()>StarBallz.this.userPlatform.getX()-b.getRadius()&&b.getCenterX()<StarBallz.this.userPlatform.getX()+StarBallz.this.userPlatform.getWidth()+b.getRadius())
+									{
+										b.bottomRebound();
+										StarBallz.this.engine.setExplosion((int) b.getCenterX(), (int) (b.getCenterY() + b.getRadius()), 500);
+
+									}
+									//else
+									{
+										//StarBallz.this.testBallz.sideRebound();
+									}
 								}
 							}
-						}
-						StarBallz.this.testBallz.move();
-						if (StarBallz.this.testBallz.getCenterX()-StarBallz.this.testBallz.getRadius()<=0||StarBallz.this.testBallz.getCenterX()+StarBallz.this.testBallz.getRadius()>= StarBallz.this.scene.getWidth())
-						{
-							StarBallz.this.testBallz.sideRebound();
-							//StarBallz.this.root.getChildren().add( new Engine((int) (StarBallz.this.testBallz.getCenterX() + StarBallz.this.testBallz.getRadius()), (int) StarBallz.this.testBallz.getCenterY(), 500));
-						}
-						
-						if (StarBallz.this.testBallz.getCenterY()+StarBallz.this.testBallz.getRadius()<=0||StarBallz.this.testBallz.getCenterY()-StarBallz.this.testBallz.getRadius()>=StarBallz.this.scene.getHeight())
-						{
-							StarBallz.this.testBallz = null;
-							StarBallz.this.root.getChildren().remove(StarBallz.this.testBallz);
-							StarBallz.this.createBallz();
+							b.move();
+							if (b.getCenterX()-b.getRadius()<=0||b.getCenterX()+b.getRadius()>= StarBallz.this.scene.getWidth())
+							{
+								b.sideRebound();
+								StarBallz.this.engine.setExplosion((int) b.getCenterX(), (int) (b.getCenterY() + b.getRadius()), 500);
+							}
+
+							if (b.getCenterY()+b.getRadius()<=0||b.getCenterY()-b.getRadius()>=StarBallz.this.scene.getHeight())
+							{
+								listToDelete.add(b);
+								StarBallz.this.ballzList.remove(b);
+								StarBallz.this.root.getChildren().remove(b);
+								
+								StarBallz.this.createBallz();
+							}
 						}
 					}
+					for (Ballz ballzToDelete : listToDelete)
+					{
+						
+					}
+					StarBallz.this.ballzList.trimToSize();
 				}
 			});
 		}		
