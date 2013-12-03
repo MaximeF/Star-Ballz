@@ -1,6 +1,10 @@
 package starBallz;
 
 import java.awt.event.KeyAdapter;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -25,7 +29,6 @@ public class StarBallz extends Application
 {
 	
 	private Group root = null;
-	private Ballz testBallz = null;
 	private Stage stage = null;
 	private Scene scene = null;
 	private UserPlatform userPlatform = null;
@@ -34,16 +37,29 @@ public class StarBallz extends Application
 	private boolean isLeftDown = false;
 	private boolean isRightDown = false;
 	private Engine engine = new Engine();
+	private int ballzIterator;
+	private int timeIterator;
+	private ArrayList<Integer> timeList;
+	private String songFileName;
 	
 	public static void main(String[] args)
 	{
 		launch(args);
 	}
 	
+	public StarBallz(String fileName)
+	{
+		this.songFileName = fileName;
+	}
+	
 	@Override
 	public void start(Stage stage) throws Exception
 	{
 		this.ballzList = new ArrayList<Ballz>();
+		this.ballzIterator = 0;
+		this.timeIterator = 0;
+		this.timeList = new ArrayList<Integer>();
+		this.fillTimeList();
 		this.stage = stage;
 		this.root = new Group();
 	    this.scene = new Scene(root, 500, 800, Color.BLACK);
@@ -53,8 +69,6 @@ public class StarBallz extends Application
 		this.stage.setTitle("StarBallz");
 		this.stage.setResizable(false);
 		this.root.getChildren().add(this.engine);
-		this.createBallz();
-		this.createBallz();
 		this.createPlatform();
 		this.stage.setScene(scene);
 		this.stage.show();
@@ -76,6 +90,7 @@ public class StarBallz extends Application
 			}
 		}
 	}
+	
 	
 	private class mouseMouvementListener implements EventHandler<MouseEvent>
 	{
@@ -101,8 +116,26 @@ public class StarBallz extends Application
 				isRightDown = true;
 			}
 		}
-		
 	}
+	
+	public void fillTimeList()
+	{
+		BufferedReader reader;
+		try {
+			reader = new BufferedReader(new FileReader("ressources/"+this.songFileName+".txt"));
+			String line = reader.readLine();
+			line = reader.readLine();
+			line = reader.readLine();
+			while (line != null) 
+			{
+				this.timeList.add(Integer.parseInt(line));
+				line = reader.readLine();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void createPlatform()
 	{
 		this.userPlatform = new UserPlatform(this.scene.getWidth()/2-(100/2),this.scene.getHeight()-this.distanceFromBottom,100,15,Color.RED);
@@ -113,12 +146,22 @@ public class StarBallz extends Application
 	{
 		Random random = new Random();
 		double randomX = (double)random.nextInt((int)this.scene.getWidth()-40) + 20;
-		double randomVelX = (((double)random.nextInt(99) + 1)/(double)100)* (double)Math.pow(-1,randomX);;
+		double randomVelX = (((double)random.nextInt(59) + 1)/(double)100)* (double)Math.pow(-1,randomX);
 		Ballz ballz = new Ballz(randomX,-10,20,randomVelX,0.5,Color.BLUE);
 		this.ballzList.add(ballz);
 		root.getChildren().add(ballz);
 	}
 	
+	public void removeNullsFromList(ArrayList<?> list)
+	{
+		for (Object object : list)
+		{
+			if (object == null)
+			{
+				list.remove(object);
+			}
+		}
+	}
 	private class StarBallzTimer extends TimerTask
 	{
 		@Override		
@@ -127,6 +170,14 @@ public class StarBallz extends Application
 			Platform.runLater(new Runnable() {
 				public void run() 
 				{
+					if (timeIterator==timeList.get(ballzIterator)&&ballzIterator<timeList.size()-1)
+					{
+						createBallz();
+						timeIterator = 0;
+						ballzIterator++;
+
+					}
+					timeIterator++;
 					if (StarBallz.this.userPlatform.getX()>0)
 					{
 						if (isLeftDown)
@@ -142,14 +193,7 @@ public class StarBallz extends Application
 							userPlatform.moveRight();
 						}
 					}
-					ArrayList<Ballz> listToDelete = new ArrayList<Ballz>();
-					int i = 0;
-					while (i < StarBallz.this.ballzList.size()-1)
-					{
-						Ballz b = StarBallz.this.ballzList.get(i);
-						
-						i++;
-					}
+					removeNullsFromList(StarBallz.this.ballzList);
 					for (Ballz b : StarBallz.this.ballzList)
 					{
 						if (b != null)
@@ -161,7 +205,7 @@ public class StarBallz extends Application
 									if (b.getCenterX()>StarBallz.this.userPlatform.getX()-b.getRadius()&&b.getCenterX()<StarBallz.this.userPlatform.getX()+StarBallz.this.userPlatform.getWidth()+b.getRadius())
 									{
 										b.bottomRebound();
-										StarBallz.this.engine.setExplosion((int) b.getCenterX(), (int) (b.getCenterY() + b.getRadius()), 500);
+										StarBallz.this.engine.setExplosion((int) b.getCenterX(), (int) (b.getCenterY() + b.getRadius()), 1);
 
 									}
 									//else
@@ -174,24 +218,17 @@ public class StarBallz extends Application
 							if (b.getCenterX()-b.getRadius()<=0||b.getCenterX()+b.getRadius()>= StarBallz.this.scene.getWidth())
 							{
 								b.sideRebound();
-								StarBallz.this.engine.setExplosion((int) b.getCenterX(), (int) (b.getCenterY() + b.getRadius()), 500);
+								StarBallz.this.engine.setExplosion((int) b.getCenterX(), (int) (b.getCenterY() + b.getRadius()), 1);
 							}
 
 							if (b.getCenterY()+b.getRadius()<=0||b.getCenterY()-b.getRadius()>=StarBallz.this.scene.getHeight())
 							{
-								listToDelete.add(b);
-								StarBallz.this.ballzList.remove(b);
 								StarBallz.this.root.getChildren().remove(b);
-								
-								StarBallz.this.createBallz();
+								b = null;
 							}
+							
 						}
 					}
-					for (Ballz ballzToDelete : listToDelete)
-					{
-						
-					}
-					StarBallz.this.ballzList.trimToSize();
 				}
 			});
 		}		

@@ -27,7 +27,7 @@ public class Explosion {
 		this.particles = new ArrayList<Particle>();
 		this.count = 0;
 		this.color = 0;
-		this.lifeTime = System.currentTimeMillis() +350;
+		this.lifeTime = System.currentTimeMillis() +250;
 		this.canvas = canvas;
 		this.init();
 	}
