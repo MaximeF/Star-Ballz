@@ -13,10 +13,12 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -41,6 +43,8 @@ public class StarBallz extends Application
 	private Timer ballzSpawnTimer = null;
 	private static final int MAXRADIUS = 16; 
 	private static final int STAGEHEIGHT = 800;
+	private static final int STAGEWIDTH = 500;
+	
 	
 	public static void main(String[] args)
 	{
@@ -62,7 +66,7 @@ public class StarBallz extends Application
 		this.fillTimeList();
 		this.stage = stage;
 		this.root = new Group();
-	    this.scene = new Scene(root, 500, STAGEHEIGHT, Color.BLACK);
+	    this.scene = new Scene(root, STAGEWIDTH, STAGEHEIGHT, Color.BLACK);
 		this.scene.setOnKeyPressed(new arrowKeyListener());
 		this.scene.setOnKeyReleased(new arrowKeyReleaseListener());
 		this.scene.setOnMouseMoved(new mouseMouvementListener());
@@ -154,7 +158,7 @@ public class StarBallz extends Application
 	
 	public void createPlatform()
 	{
-		this.userPlatform = new UserPlatform(this.scene.getWidth()/2-(100/2),this.scene.getHeight()-this.distanceFromBottom,100,15,Color.RED);
+		this.userPlatform = new UserPlatform(this.scene.getWidth()/2-(100/2),this.scene.getHeight()-this.distanceFromBottom,100,15);
 		this.engine.getChildren().add(this.userPlatform);
 	}
 	
@@ -163,7 +167,7 @@ public class StarBallz extends Application
 		Random random = new Random();
 		double randomX = (double)random.nextInt((int)this.scene.getWidth()-40) + 20;
 		double randomVelX = (((double)random.nextInt(59) + 1)/(double)100)* (double)Math.pow(-1,randomX);
-		Ballz ballz = new Ballz(randomX,-10,MAXRADIUS,randomVelX,0.5,Color.BLUE);
+		Ballz ballz = new Ballz(randomX,-10,MAXRADIUS,randomVelX,0.5);
 		this.ballzList.add(ballz);
 		root.getChildren().add(ballz);
 	}
@@ -237,8 +241,13 @@ public class StarBallz extends Application
 									{
 										b.bottomRebound();
 										StarBallz.this.engine.setExplosion((int) b.getCenterX(), (int) (b.getCenterY() + b.getRadius()), 250,(Color)b.getFill());
-										b.setFill(Color.WHITE);
-
+										userPlatform.setDropShadowColor((Color)b.getFill());
+										b.setFill(Color.DARKGRAY);
+										if (b.getFill()==javafx.scene.paint.Color.RED)
+										{
+											StarBallz.this.userPlatform.setFill(new ImagePattern(new Image("redPlatform.jpg")));
+										}
+										
 									}
 									//else
 									{
