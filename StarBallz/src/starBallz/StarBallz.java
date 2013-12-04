@@ -72,8 +72,10 @@ public class StarBallz extends Application
 		this.createPlatform();
 		this.stage.setScene(scene);
 		this.stage.show();
-		Timer starBallzTimer = new Timer();
-		starBallzTimer.schedule(new StarBallzTimer(), 1, 1);
+		Timer BallzMovementTimer = new Timer();
+		BallzMovementTimer.schedule(new BallzMovementTimer(), 1, 1);
+		Timer BallzSpawnTimer = new Timer();
+		BallzSpawnTimer.schedule(new BallzSpawnTimer(), 1, 1);
 	}
 	
 	private class arrowKeyReleaseListener implements EventHandler<KeyEvent>
@@ -162,13 +164,15 @@ public class StarBallz extends Application
 			}
 		}
 	}
-	private class StarBallzTimer extends TimerTask
+	
+	private class BallzSpawnTimer extends TimerTask
 	{
-		@Override		
+		@Override
 		public void run()
 		{
-			Platform.runLater(new Runnable() {
-				public void run() 
+			Platform.runLater(new Runnable() 
+			{
+				public void run()
 				{
 					if (timeIterator==timeList.get(ballzIterator)&&ballzIterator<timeList.size()-1)
 					{
@@ -178,6 +182,19 @@ public class StarBallz extends Application
 
 					}
 					timeIterator++;
+				}
+			});
+		}
+	}
+	private class BallzMovementTimer extends TimerTask
+	{
+		@Override		
+		public void run()
+		{
+			Platform.runLater(new Runnable() {
+				public void run() 
+				{
+					
 					if (StarBallz.this.userPlatform.getX()>0)
 					{
 						if (isLeftDown)
@@ -205,7 +222,7 @@ public class StarBallz extends Application
 									if (b.getCenterX()>StarBallz.this.userPlatform.getX()-b.getRadius()&&b.getCenterX()<StarBallz.this.userPlatform.getX()+StarBallz.this.userPlatform.getWidth()+b.getRadius())
 									{
 										b.bottomRebound();
-										StarBallz.this.engine.setExplosion((int) b.getCenterX(), (int) (b.getCenterY() + b.getRadius()), 1);
+										StarBallz.this.engine.setExplosion((int) b.getCenterX(), (int) (b.getCenterY() + b.getRadius()), 250);
 
 									}
 									//else
@@ -218,7 +235,7 @@ public class StarBallz extends Application
 							if (b.getCenterX()-b.getRadius()<=0||b.getCenterX()+b.getRadius()>= StarBallz.this.scene.getWidth())
 							{
 								b.sideRebound();
-								StarBallz.this.engine.setExplosion((int) b.getCenterX(), (int) (b.getCenterY() + b.getRadius()), 1);
+								StarBallz.this.engine.setExplosion((int) b.getCenterX(), (int) (b.getCenterY() + b.getRadius()), 250);
 							}
 
 							if (b.getCenterY()+b.getRadius()<=0||b.getCenterY()-b.getRadius()>=StarBallz.this.scene.getHeight())

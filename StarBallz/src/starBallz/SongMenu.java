@@ -69,10 +69,13 @@ public class SongMenu extends Application
 			String fileName = label.getId();
 			StarBallz game = new StarBallz(fileName);
 			try {
-				game.start(new Stage());
+				Stage stage = new Stage();
+				game.start(stage);
+				stage = null;
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
+			game = null;
 		}
 	}
 }
