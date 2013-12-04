@@ -28,9 +28,7 @@ public class Engine extends Pane {
 				// clear area with transparent black
 				gc.setFill(Color.rgb(0, 0, 0, 1));
 				gc.fillRect(0, 0, 1024, 1000);
-
 				Engine.this.refresh();
-
 			}
 		};
 
@@ -39,9 +37,9 @@ public class Engine extends Pane {
 	}
 
 
-	public void setExplosion(int x, int y, int maxParticle)
+	public void setExplosion(int x, int y, int maxParticle,Color color)
 	{
-		this.explosions.add(new Explosion(x, y, maxParticle, canvas));
+		this.explosions.add(new Explosion(x, y, maxParticle, canvas,color));
 	}
 
 	public void refresh()

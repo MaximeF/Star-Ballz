@@ -18,6 +18,7 @@ public class Particle {
 	private final int size;
 	private double xPos;
 	private double yPos;
+	@SuppressWarnings("unused")
 	private double alpha;
 	private double fade;
 	

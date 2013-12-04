@@ -13,27 +13,23 @@ public class Explosion {
 	private int posY;
 	private int maxParticle;
 	private List<Particle> particles;
-	private Color colors[]= {Color.BLUE, Color.RED, Color.LIMEGREEN};
-	private int color;
-	private int count;
+	private Color color = null;
 	private double lifeTime;
 	private Canvas canvas;
 
-	public Explosion(int posX, int posY, int maxParticle, Canvas canvas )
+	public Explosion(int posX, int posY, int maxParticle, Canvas canvas,Color color)
 	{
 		this.posX = posX;
 		this.posY = posY;
 		this.maxParticle = maxParticle;
 		this.particles = new ArrayList<Particle>();
-		this.count = 0;
-		this.color = 0;
+		this.color = color;
 		this.lifeTime = System.currentTimeMillis() +250;
 		this.canvas = canvas;
 		this.init();
 	}
 
-
-
+	
 	public void init()
 	{
 		double angle = (Math.PI * 2) / this.maxParticle;
@@ -43,7 +39,7 @@ public class Explosion {
 			double particleAngle = i * angle;
 
 			Particle newParticle = new Particle(this.posX, this.posY, Math.cos(particleAngle) * randomVelocity,  
-					Math.sin(particleAngle) * randomVelocity, this.colors[color], 1, (int) (800 * Math.random()%1000));
+					Math.sin(particleAngle) * randomVelocity, this.color, 1, (int) (800 * Math.random()%1000));
 			this.particles.add(newParticle);
 
 		}
@@ -68,20 +64,8 @@ public class Explosion {
 					double angle = 0.1f * (double)(Math.random() * 2 - 1);
 
 					Particle newParticle = new Particle(this.posX, this.posY, Math.cos(angle * i) *  randomVelocity,  
-							Math.sin(angle * i) *  randomVelocity, this.colors[color], 1, (int) (800 * Math.random()%1000));
+							Math.sin(angle * i) *  randomVelocity, this.color, 1, (int) (800 * Math.random()%1000));
 					this.particles.add(newParticle);					
-				}
-
-				this.count ++;
-				if(count > this.maxParticle)
-				{
-					this.count = 0;
-					this.color++;
-
-					if(this.color > 2)
-					{
-						this.color = 0;
-					}
 				}
 
 

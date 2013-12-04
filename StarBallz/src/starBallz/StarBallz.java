@@ -1,17 +1,12 @@
 package starBallz;
 
-import java.awt.event.KeyAdapter;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import starBallz.UserPlatform;
 import java.util.TimerTask;
-
 import particle.engine.Engine;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -23,6 +18,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 
 public class StarBallz extends Application
@@ -41,6 +37,10 @@ public class StarBallz extends Application
 	private int timeIterator;
 	private ArrayList<Integer> timeList;
 	private String songFileName;
+	private Timer ballzMovementTimer = null;
+	private Timer ballzSpawnTimer = null;
+	private static final int MAXRADIUS = 16; 
+	private static final int STAGEHEIGHT = 800;
 	
 	public static void main(String[] args)
 	{
@@ -62,20 +62,21 @@ public class StarBallz extends Application
 		this.fillTimeList();
 		this.stage = stage;
 		this.root = new Group();
-	    this.scene = new Scene(root, 500, 800, Color.BLACK);
+	    this.scene = new Scene(root, 500, STAGEHEIGHT, Color.BLACK);
 		this.scene.setOnKeyPressed(new arrowKeyListener());
 		this.scene.setOnKeyReleased(new arrowKeyReleaseListener());
 		this.scene.setOnMouseMoved(new mouseMouvementListener());
+		this.stage.setOnCloseRequest(new closeAppListener());
 		this.stage.setTitle("StarBallz");
 		this.stage.setResizable(false);
 		this.root.getChildren().add(this.engine);
 		this.createPlatform();
 		this.stage.setScene(scene);
 		this.stage.show();
-		Timer BallzMovementTimer = new Timer();
-		BallzMovementTimer.schedule(new BallzMovementTimer(), 1, 1);
-		Timer BallzSpawnTimer = new Timer();
-		BallzSpawnTimer.schedule(new BallzSpawnTimer(), 1, 1);
+		this.ballzMovementTimer = new Timer();
+		this.ballzMovementTimer.schedule(new BallzMovementTimer(), 1, 1);
+		this.ballzSpawnTimer = new Timer();
+		this.ballzSpawnTimer.schedule(new BallzSpawnTimer(), 1, 1);
 	}
 	
 	private class arrowKeyReleaseListener implements EventHandler<KeyEvent>
@@ -93,6 +94,19 @@ public class StarBallz extends Application
 		}
 	}
 	
+	private class closeAppListener implements EventHandler<WindowEvent>
+	{
+		public void handle(WindowEvent e)
+		{
+			ballzMovementTimer.cancel();
+			ballzSpawnTimer.cancel();
+			try {
+				StarBallz.this.stop();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		}
+	}
 	
 	private class mouseMouvementListener implements EventHandler<MouseEvent>
 	{
@@ -149,7 +163,7 @@ public class StarBallz extends Application
 		Random random = new Random();
 		double randomX = (double)random.nextInt((int)this.scene.getWidth()-40) + 20;
 		double randomVelX = (((double)random.nextInt(59) + 1)/(double)100)* (double)Math.pow(-1,randomX);
-		Ballz ballz = new Ballz(randomX,-10,20,randomVelX,0.5,Color.BLUE);
+		Ballz ballz = new Ballz(randomX,-10,MAXRADIUS,randomVelX,0.5,Color.BLUE);
 		this.ballzList.add(ballz);
 		root.getChildren().add(ballz);
 	}
@@ -179,7 +193,6 @@ public class StarBallz extends Application
 						createBallz();
 						timeIterator = 0;
 						ballzIterator++;
-
 					}
 					timeIterator++;
 				}
@@ -215,6 +228,7 @@ public class StarBallz extends Application
 					{
 						if (b != null)
 						{
+							
 							if (b.intersects(StarBallz.this.userPlatform.getBoundsInLocal()))
 							{
 								if (b.getCenterY()+b.getRadius()==StarBallz.this.userPlatform.getY())
@@ -222,7 +236,8 @@ public class StarBallz extends Application
 									if (b.getCenterX()>StarBallz.this.userPlatform.getX()-b.getRadius()&&b.getCenterX()<StarBallz.this.userPlatform.getX()+StarBallz.this.userPlatform.getWidth()+b.getRadius())
 									{
 										b.bottomRebound();
-										StarBallz.this.engine.setExplosion((int) b.getCenterX(), (int) (b.getCenterY() + b.getRadius()), 250);
+										StarBallz.this.engine.setExplosion((int) b.getCenterX(), (int) (b.getCenterY() + b.getRadius()), 250,(Color)b.getFill());
+										b.setFill(Color.WHITE);
 
 									}
 									//else
@@ -235,7 +250,7 @@ public class StarBallz extends Application
 							if (b.getCenterX()-b.getRadius()<=0||b.getCenterX()+b.getRadius()>= StarBallz.this.scene.getWidth())
 							{
 								b.sideRebound();
-								StarBallz.this.engine.setExplosion((int) b.getCenterX(), (int) (b.getCenterY() + b.getRadius()), 250);
+								StarBallz.this.engine.setExplosion((int) b.getCenterX(), (int) (b.getCenterY() + b.getRadius()), 250,(Color)b.getFill());
 							}
 
 							if (b.getCenterY()+b.getRadius()<=0||b.getCenterY()-b.getRadius()>=StarBallz.this.scene.getHeight())
