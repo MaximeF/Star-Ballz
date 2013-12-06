@@ -9,7 +9,7 @@ import javafx.scene.shape.Rectangle;
 
 public class UserPlatform extends Rectangle
 {
-	private int MOVE_SPEED = 1;
+	private int MOVE_SPEED = 2;
 	private DropShadow ds = null;
 	public UserPlatform(double xPos,double yPos,int width,double height)
 	{

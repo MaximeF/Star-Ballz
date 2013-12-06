@@ -16,10 +16,12 @@ public class SongMenu extends Application
 {
 	private static final int SONGNUMBER = 1;
 	private GridPane gridPane;
+	private Stage stage = null;
 	
 	@Override
 	public void start(Stage stage) throws Exception
 	{
+		this.stage = stage;
 		Group root = new Group();
 		this.gridPane = new GridPane();
 	    Scene scene = new Scene(root, 500, 800, Color.BLACK);
@@ -67,15 +69,13 @@ public class SongMenu extends Application
 		{
 			Label label = (Label)e.getSource();
 			String fileName = label.getId();
-			StarBallz game = new StarBallz(fileName);
+			StarBallz game = new StarBallz(fileName,stage);
 			try {
 				Stage stage = new Stage();
 				game.start(stage);
-				stage = null;
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
-			game = null;
 		}
 	}
 }

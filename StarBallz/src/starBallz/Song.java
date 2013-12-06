@@ -2,7 +2,7 @@ package starBallz;
 
 public enum Song 
 {
-	MARIOBROS("Mario Bros"),
+	TETRIS("Tetris"),
 	AUTRECHANSON("adsasd");
 	
 	private String fileName;
