@@ -26,7 +26,10 @@ public class UserPlatform
 		this.height = this.image.getHeight();
 
 	}
-
+    public void setImage(String imageURL)
+    {
+    	this.image = new Image(imageURL);
+    }
 	public void setDropShadowColor(Color color)
 	{
 		

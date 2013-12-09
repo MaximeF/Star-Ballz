@@ -1,5 +1,8 @@
 package starBallz;
 
+import java.io.File;
+import java.net.URL;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -8,6 +11,8 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -29,13 +34,14 @@ public class Game extends Application
 		this.canvas.setOnMouseMoved(new mouseMouvement());
 		stage.setScene(new Scene(group));
 		stage.show();
+		this.startMusic();
 		//this.gameLoop.start();
 		this.animTimer = new AnimationTimer() {
 
 			@Override
 			public void handle(long arg0) {
 				GraphicsContext gc = Game.this.canvas.getGraphicsContext2D();
-				gc.setFill(Color.rgb(0, 0, 0, 1));
+				gc.setFill(Color.rgb(0, 0, 0, 0.3));
 				gc.fillRect(0, 0, STAGEWIDTH, STAGEHEIGHT);
 				loop();
 			}
@@ -44,7 +50,15 @@ public class Game extends Application
 		this.animTimer.start();
 
 	}
-
+	
+	public void startMusic()
+	{
+		   String source = new File("ressources/Tetris.mp3").toURI().toString();
+           Media media = new Media(source);
+           MediaPlayer mediaPlayer = new MediaPlayer(media);
+           mediaPlayer.play();
+	}
+	
 	public void loop() 
 	{
 		updateGame();

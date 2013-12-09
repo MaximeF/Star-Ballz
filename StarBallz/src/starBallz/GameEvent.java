@@ -61,6 +61,31 @@ public class GameEvent {
 
 				b.bottomRebound();
 				b.setExplosion(this.engine, (int) (b.getxPos() + b.getSize()), (int) (b.getyPos() + b.getSize()), 250,(Color) b.getColor());
+				if (b.getColor()==Color.RED)
+				{
+					this.platform.setImage("redPlatform.jpg");
+				}
+				else if (b.getColor()==Color.DARKTURQUOISE)
+				{
+					this.platform.setImage("turquoisePlatform.jpg");
+				}
+				else if (b.getColor()==Color.LIMEGREEN)
+				{
+					this.platform.setImage("greenPlatform.jpg");
+				}
+				else if (b.getColor()==Color.YELLOW)
+				{
+					this.platform.setImage("yellowPlatform.jpg");
+				}
+				else if (b.getColor()==Color.DEEPPINK)
+				{
+					this.platform.setImage("pinkPlatform.jpg");
+				}
+				else if (b.getColor()==Color.DARKVIOLET)
+				{
+					this.platform.setImage("violetPlatform.jpg");
+				}
+				b.setColor(Color.GRAY);
 
 			}
 
