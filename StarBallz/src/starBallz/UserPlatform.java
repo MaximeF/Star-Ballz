@@ -1,46 +1,71 @@
 package starBallz;
 
-import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Reflection;
+
+
+
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Rectangle;
 
-public class UserPlatform extends Rectangle
+
+public class UserPlatform 
 {
-	private int MOVE_SPEED = 2;
-	private DropShadow ds = null;
-	public UserPlatform(double xPos,double yPos,int width,double height)
+	private static int MOVE_SPEED = 1;
+	private double xPos;
+	private double yPos;
+	private double width;
+	private double height;
+	private Image image;
+
+	public UserPlatform(double xPos, double yPos)
 	{
-		
-		super();
-		this.setX(xPos);
-		this.setY(yPos);
-		this.setWidth(width);
-		this.setHeight(height);
-		Image platformImage = new Image("redPlatform.jpg");
-		this.setFill(new ImagePattern(platformImage));
-		this.ds = new DropShadow();
-		this.ds.setColor(Color.RED);
-		this.ds.setSpread(0.4);
-		Reflection reflection = new Reflection();
-		ds.setInput(reflection);    
-		this.setEffect(ds);
+		this.xPos = xPos;
+		this.yPos = yPos;
+		this.image = new Image("redPlatform.jpg");
+		this.width = this.image.getWidth();
+		this.height = this.image.getHeight();
+
 	}
-	
+
 	public void setDropShadowColor(Color color)
 	{
-		this.ds.setColor(color);
+		
 	}
-	
+
 	public void moveRight()
 	{
-		this.setX(this.getX()+MOVE_SPEED);
+		this.xPos += UserPlatform.MOVE_SPEED;
 	}
-	
+
 	public void moveLeft()
 	{
-		this.setX(this.getX()-MOVE_SPEED);
+		this.xPos -=  UserPlatform.MOVE_SPEED;
 	}
+	
+	public void draw(GraphicsContext gc)
+	{
+		gc.drawImage(this.image, this.xPos, this.yPos, this.width, this.height);
+	}
+
+	public double getxPos() {
+		return this.xPos;
+	}
+
+	public double getyPos() {
+		return this.yPos;
+	}
+
+	public double getWidth() {
+		return this.width;
+	}
+
+	public double getHeight() {
+		return this.height;
+	}
+
+	public void setxPos(double xPos) {
+		this.xPos = xPos;
+	}
+	
+	
 }

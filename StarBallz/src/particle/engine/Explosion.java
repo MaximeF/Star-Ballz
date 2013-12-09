@@ -2,8 +2,7 @@ package particle.engine;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
+
 import javafx.scene.paint.Color;
 import particle.engine.Particle;
 
@@ -15,9 +14,8 @@ public class Explosion {
 	private List<Particle> particles;
 	private Color color = null;
 	private double lifeTime;
-	private Canvas canvas;
 
-	public Explosion(int posX, int posY, int maxParticle, Canvas canvas,Color color)
+	public Explosion(int posX, int posY, int maxParticle,Color color)
 	{
 		this.posX = posX;
 		this.posY = posY;
@@ -25,11 +23,10 @@ public class Explosion {
 		this.particles = new ArrayList<Particle>();
 		this.color = color;
 		this.lifeTime = System.currentTimeMillis() +250;
-		this.canvas = canvas;
 		this.init();
 	}
 
-	
+
 	public void init()
 	{
 		double angle = (Math.PI * 2) / this.maxParticle;
@@ -48,8 +45,6 @@ public class Explosion {
 
 	public void refresh()
 	{
-		GraphicsContext graphics = this.canvas.getGraphicsContext2D();
-
 		for(int i = 0; i < this.particles.size(); i++)
 		{
 
@@ -73,7 +68,6 @@ public class Explosion {
 			else
 			{
 				this.particles.get(i).move();
-				this.particles.get(i).draw(graphics);
 			}
 		}
 	}
@@ -82,5 +76,12 @@ public class Explosion {
 	{
 		return (System.currentTimeMillis() > this.lifeTime && this.particles.isEmpty());
 	}
+
+
+	public List<Particle> getParticles() 
+	{
+		return this.particles;
+	}
+
 
 }
