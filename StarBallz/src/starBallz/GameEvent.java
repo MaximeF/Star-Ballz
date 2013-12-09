@@ -19,7 +19,7 @@ public class GameEvent {
 	private int stageHeight;
 	private int stageWidth;
 	private Engine engine = new Engine();
-	private UserPlatform platform = new UserPlatform(150, 780);
+	private UserPlatform platform = new UserPlatform(150, 630);
 	ArrayList<Ballz> ballzList = new ArrayList<Ballz>();
 	private String songFileName;
 	private ArrayList<Integer> timeList = new ArrayList<Integer>();

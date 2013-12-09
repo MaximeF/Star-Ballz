@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 
 public class SongMenu extends Application
 {
-	private static final int SONGNUMBER = 1;
+	private static final int SONGNUMBER = 2;
 	private GridPane gridPane;
 
 	@Override
@@ -67,7 +67,7 @@ public class SongMenu extends Application
 		{
 			Label label = (Label)e.getSource();
 			String fileName = label.getId();
-			StarBallz game = new StarBallz(fileName);
+			Game game = new Game(fileName);
 			try {
 				Stage stage = new Stage();
 				game.start(stage);

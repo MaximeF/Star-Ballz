@@ -18,14 +18,21 @@ import javafx.stage.Stage;
 
 public class Game extends Application
 {
-	private static final int STAGEHEIGHT = 800;
+	private static final int STAGEHEIGHT = 650;
 	private static final int STAGEWIDTH = 500;
 	private Canvas canvas = new Canvas(STAGEWIDTH, STAGEHEIGHT);
-	private GameEvent gameEvent = new GameEvent(STAGEWIDTH, STAGEHEIGHT, "Mario Bros.txt");
+	private GameEvent gameEvent;
 	private Thread gameLoop = new Thread(new GameLoop());
 	private AnimationTimer animTimer;
+	private String fileName = "";
 
 
+	public Game(String fileName)
+	{
+		this.fileName = fileName;
+		this.gameEvent = new GameEvent(STAGEWIDTH, STAGEHEIGHT, this.fileName + ".txt");
+	}
+	
 	@Override
 	public void start(Stage stage) throws Exception
 	{
@@ -34,7 +41,7 @@ public class Game extends Application
 		this.canvas.setOnMouseMoved(new mouseMouvement());
 		stage.setScene(new Scene(group));
 		stage.show();
-		this.startMusic();
+		this.startMusic(this.fileName);
 		//this.gameLoop.start();
 		this.animTimer = new AnimationTimer() {
 
@@ -51,9 +58,9 @@ public class Game extends Application
 
 	}
 	
-	public void startMusic()
+	public void startMusic(String fileName)
 	{
-		   String source = new File("ressources/Tetris.mp3").toURI().toString();
+		   String source = new File("ressources/" + fileName + ".mp3").toURI().toString();
            Media media = new Media(source);
            MediaPlayer mediaPlayer = new MediaPlayer(media);
            mediaPlayer.play();
