@@ -30,10 +30,6 @@ public class UserPlatform
     {
     	this.image = new Image(imageURL);
     }
-	public void setDropShadowColor(Color color)
-	{
-		
-	}
 
 	public void moveRight()
 	{

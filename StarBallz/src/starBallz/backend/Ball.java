@@ -28,6 +28,7 @@ public abstract class Ball {
 		this.xVel = xVel;
 		this.yVel = yVel;
 		this.size = size;
+		this.color = null;
 	}
 
 	public void move() {
@@ -46,15 +47,11 @@ public abstract class Ball {
 	public double getxPos() {
 		return xPos;
 	}
-	public void setxPos(double xPos) {
-		this.xPos = xPos;
-	}
+	
 	public double getyPos() {
 		return yPos;
 	}
-	public void setyPos(double yPos) {
-		this.yPos = yPos;
-	}
+	
 	public double getxVel() {
 		return xVel;
 	}

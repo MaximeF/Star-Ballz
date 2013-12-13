@@ -17,10 +17,8 @@ public class Ballz extends Ball implements Bouncy, Explosive
 		super(xPos, yPos, size, xVel, yVel);
 		Random random = new Random();
 		int colorIndex = random.nextInt(6);
-		super.setColor(colors[colorIndex]);
+		super.setColor((Color)colors[colorIndex]);
 	}
-
-
 
 	@Override
 	public void sideRebound()
@@ -50,7 +48,6 @@ public class Ballz extends Ball implements Bouncy, Explosive
 	public void setExplosion(Engine engine, int x, int y, int maxParticle,Color color) 
 	{
 		engine.setExplosion(x, y, maxParticle, color);
-
 	}
 
 
