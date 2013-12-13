@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 
 public class SongMenu extends Application
 {
-	private static final int SONGNUMBER = 2;
+	private static final int SONGNUMBER = 3;
 	private GridPane gridPane;
 
 	@Override
@@ -38,7 +38,7 @@ public class SongMenu extends Application
 	public void addSongMenu()
 	{
 		Song[] songList = Song.values();
-		for(int i =0;i<SONGNUMBER;i++)
+		for(int i = 0; i < SONGNUMBER; i++)
 		{
 			String fileName = songList[i].getFileName();
 

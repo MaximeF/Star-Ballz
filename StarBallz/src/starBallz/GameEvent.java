@@ -10,6 +10,7 @@ import java.util.TimerTask;
 
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import particle.engine.Engine;
@@ -19,8 +20,6 @@ public class GameEvent {
 	private int stageHeight;
 	private int stageWidth;
 	private Engine engine = new Engine();
-	private UserPlatform platform = new UserPlatform(150, 630);
-	ArrayList<Ballz> ballzList = new ArrayList<Ballz>();
 	private String songFileName;
 	private ArrayList<Integer> timeList = new ArrayList<Integer>();
 	private static final int MAXRADIUS = 16; 
@@ -28,6 +27,9 @@ public class GameEvent {
 	public int currentFPS = 0;
 	public int FPS = 0;
 	public long start = 0;
+	private Background background = new Background(new Image("starscape.jpg"), 4, 0);
+	private ArrayList<Ballz> ballzList = new ArrayList<Ballz>();
+	private UserPlatform platform = new UserPlatform(150, 780);
 
 
 	public GameEvent(int width, int height, String song)
@@ -36,10 +38,7 @@ public class GameEvent {
 		this.stageHeight = height;
 		this.songFileName = song;
 		this.fillTimeList();
-
-		//this.createBallz();
-		//this.createBallz();
-		this.ballzSpawnTimer.schedule(new BallzSpawnTimer(), 1, 1);
+		this.ballzSpawnTimer.schedule(new BallzSpawnTimer(), 30, 1);
 
 	}
 
@@ -194,8 +193,11 @@ public class GameEvent {
 
 	public void draw(GraphicsContext gc)
 	{
+		this.background.draw(gc);
+		gc.setGlobalAlpha(1);
 		this.engine.draw(gc);
 		this.platform.draw(gc);
+
 		for(int i = 0; i < this.ballzList.size(); i++)
 		{
 			this.ballzList.get(i).draw(gc);
@@ -210,6 +212,7 @@ public class GameEvent {
 
 	public void refresh()
 	{
+		this.background.update();
 		this.engine.refresh();
 		this.move();
 

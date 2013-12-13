@@ -38,7 +38,6 @@ public abstract class Ball {
 
 	public void draw(GraphicsContext gc) 
 	{
-
 		gc.setFill(this.color);
 		gc.fillOval(this.xPos-this.size, this.yPos-this.size, this.size + this.size, this.size + this.size);
 
