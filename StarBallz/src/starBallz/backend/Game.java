@@ -1,6 +1,8 @@
-package starBallz;
+package starBallz.backend;
 
 import java.io.File;
+
+import starBallz.GameEvent;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -14,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class Game extends Application
 {
@@ -41,8 +44,10 @@ public class Game extends Application
 		this.canvas.setOnMouseMoved(new mouseMouvement());
 		Scene scene =  new Scene(group);
 		stage.setScene(scene);
+		//stage.setResizable(false);
+		stage.setOnCloseRequest(new CloseRequest());
 		stage.show();
-		
+
 		this.startMusic(this.fileName);
 		scene.setOnKeyPressed(new onKeyPressed());
 		this.animTimer = new AnimationTimer() {
@@ -65,7 +70,7 @@ public class Game extends Application
 			}
 		}
 	}
-	
+
 	public void quitGame()
 	{
 		this.mediaPlayer.stop();
@@ -73,9 +78,9 @@ public class Game extends Application
 		this.animTimer.stop();
 		this.gameEvent = null;
 		this.stage.close();
-		
+
 	}
-	
+
 	public void startMusic(String fileName)
 	{
 		String source = new File("ressources/" + fileName + ".mp3").toURI().toString();
@@ -116,9 +121,16 @@ public class Game extends Application
 		}
 	}
 
-	public static void main(String arg[]) 
+	private class CloseRequest implements EventHandler<WindowEvent>
 	{
-		launch(arg);
+
+		@Override
+		public void handle(WindowEvent arg0) {
+			quitGame();
+		}
+
 	}
+
+
 
 }

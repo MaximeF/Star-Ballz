@@ -1,7 +1,7 @@
-package starBallz;
+package starBallz.backend;
 
 public interface Bouncy 
 {
 	public void sideRebound();
-	public void bottomRebound();
+	public boolean bottomRebound();
 }

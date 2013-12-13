@@ -1,4 +1,4 @@
-package starBallz;
+package starBallz.backend;
 
 
 

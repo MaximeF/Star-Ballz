@@ -1,6 +1,6 @@
-package starBallz;
+package starBallz.backend;
 
-import particle.engine.Engine;
+import starBallz.backend.explosion.Engine;
 import javafx.scene.paint.Color;
 
 public interface Explosive {

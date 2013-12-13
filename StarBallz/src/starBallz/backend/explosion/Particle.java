@@ -1,6 +1,6 @@
-package particle.engine;
+package starBallz.backend.explosion;
 
-import ball.Ball;
+import starBallz.backend.Ball;
 import javafx.scene.paint.Paint;
 
 

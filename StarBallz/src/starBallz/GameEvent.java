@@ -13,7 +13,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import particle.engine.Engine;
+import starBallz.backend.Background;
+import starBallz.backend.Ballz;
+import starBallz.backend.UserPlatform;
+import starBallz.backend.explosion.Engine;
 
 public class GameEvent {
 
@@ -29,7 +32,10 @@ public class GameEvent {
 	public long start = 0;
 	private Background background = new Background(new Image("starscape.jpg"), 4, 0);
 	private ArrayList<Ballz> ballzList = new ArrayList<Ballz>();
-	private UserPlatform platform = new UserPlatform(150, 780);
+	private UserPlatform platform;
+	private float hitBallzNb = 0;
+	private float totalBallzNb = 0;
+	private float score = 0;
 
 
 	public GameEvent(int width, int height, String song)
@@ -37,6 +43,7 @@ public class GameEvent {
 		this.stageWidth = width;
 		this.stageHeight = height;
 		this.songFileName = song;
+		this.platform = new UserPlatform(this.stageWidth/2 -50, this.stageHeight - 20);
 		this.fillTimeList();
 		this.ballzSpawnTimer.schedule(new BallzSpawnTimer(), 30, 1);
 
@@ -58,7 +65,10 @@ public class GameEvent {
 			if (this.plateformCollison(b))
 			{
 
-				b.bottomRebound();
+				if(b.bottomRebound())
+				{
+					this.hitBallzNb ++;
+				}
 				b.setExplosion(this.engine, (int) (b.getxPos() + b.getSize()), (int) (b.getyPos() + b.getSize()), 250,(Color) b.getColor());
 				if (b.getColor()==Color.RED)
 				{
@@ -163,6 +173,8 @@ public class GameEvent {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		this.totalBallzNb = this.timeList.size();
 	}
 
 	private class BallzSpawnTimer extends TimerTask
@@ -206,7 +218,7 @@ public class GameEvent {
 		gc.setFill(Color.RED);
 		Font font = new Font("Dialog", 16);
 		gc.setFont(font);
-		gc.fillText(""+this.FPS, 20, 20);
+		gc.fillText("Score "+this.getScore() +"% Hits "+ this.hitBallzNb + " Total "+ this.totalBallzNb, 20, 20);
 
 	}
 
@@ -222,6 +234,14 @@ public class GameEvent {
 	{
 		return this.platform;
 
+	}
+	
+	public float getScore()
+	{
+		this.score = (this.hitBallzNb/ this.totalBallzNb)*100;
+		
+		return this.score;
+		
 	}
 
 	public void tick() 

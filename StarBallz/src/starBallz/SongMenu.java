@@ -2,6 +2,9 @@ package starBallz;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+
+import starBallz.backend.Game;
+import starBallz.backend.Song;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Group;

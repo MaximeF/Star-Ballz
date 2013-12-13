@@ -1,9 +1,8 @@
-package starBallz;
+package starBallz.backend;
 import java.util.Random;
 
-import particle.engine.Engine;
+import starBallz.backend.explosion.Engine;
 
-import ball.Ball;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
@@ -30,14 +29,19 @@ public class Ballz extends Ball implements Bouncy, Explosive
 	}
 
 	@Override
-	public void bottomRebound()
+	public boolean bottomRebound()
 	{
 		if(!this.rebounded)
 		{
-		super.setyVel(-super.getyVel());
-		this.rebounded = true;
+			super.setyVel(-super.getyVel());
+			this.rebounded = true;
+			return true;
 		}
-		
+		else
+		{
+			return false;
+		}
+
 	}
 
 

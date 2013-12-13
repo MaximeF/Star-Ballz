@@ -1,10 +1,10 @@
-package particle.engine;
+package starBallz.backend.explosion;
 import java.util.ArrayList;
 import java.util.List;
 
 
 import javafx.scene.paint.Color;
-import particle.engine.Particle;
+import starBallz.backend.explosion.Particle;
 
 public class Explosion {
 

@@ -1,9 +1,9 @@
-package particle.engine;
+package starBallz.backend.explosion;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import starBallz.Explosive;
+import starBallz.backend.Explosive;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
