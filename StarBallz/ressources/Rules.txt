@@ -1,0 +1,5 @@
+
+Star Ballz est un jeu qui ressemble beaucoup à un casse-briques, 
+mais sans les briques. Le principe est de renvoyer les balles 
+qui arrivent du haut de la fenêtre. Le but est d'accumuler le 
+plus de points possibles en renvoyant le plus de balles possible. 

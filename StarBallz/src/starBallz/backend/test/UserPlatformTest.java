@@ -18,8 +18,8 @@ public class UserPlatformTest
 	public void constructorFiveParametersTest()
 	{
 		UserPlatform platform = new UserPlatform(0, 0);
-		Assert.assertEquals(0,platform.getxPos());
-		Assert.assertEquals(0,platform.getyPos());
+		Assert.assertEquals(0,platform.getxPos(),0);
+		Assert.assertEquals(0,platform.getyPos(),0);
 	}
 	
 }

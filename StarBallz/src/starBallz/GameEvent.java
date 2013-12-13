@@ -31,8 +31,10 @@ public class GameEvent {
 	public int FPS = 0;
 	public long start = 0;
 	private Background background = new Background(new Image("starscape.jpg"), 4, 0);
+	private int returnedBallz = 0;
+	private int ballzTotal = 0;
 	private ArrayList<Ballz> ballzList = new ArrayList<Ballz>();
-	private UserPlatform platform;
+	private UserPlatform platform = new UserPlatform(150, 630);
 	private float hitBallzNb = 0;
 	private float totalBallzNb = 0;
 	private float score = 0;
@@ -97,7 +99,7 @@ public class GameEvent {
 					this.platform.setImage("violetPlatform.jpg");
 				}
 				b.setColor(Color.GRAY);
-
+				this.returnedBallz++;
 			}
 
 			if (b.getxPos() - b.getSize() <= 0)
@@ -167,6 +169,7 @@ public class GameEvent {
 				try 
 				{
 					this.timeList.add(Integer.parseInt(line));
+					this.ballzTotal++;
 				}
 				catch(NumberFormatException ex){
 					this.timeList.add(1);
@@ -268,7 +271,7 @@ public class GameEvent {
 		currentFPS++;
 		if(System.nanoTime() - start >= 1000000000) 
 		{
-			FPS = currentFPS;
+			FPS = this.returnedBallz;
 			currentFPS = 0;
 			start = System.nanoTime();
 		}
@@ -278,6 +281,14 @@ public class GameEvent {
 
 	public int getFPS() {
 		return FPS;
+	}
+	
+	public double getReturnedBallz() {
+		return this.returnedBallz;
+	}
+	
+	public double getBallzTotal() {
+		return this.ballzTotal;
 	}
 
 }

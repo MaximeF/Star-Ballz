@@ -1,5 +1,9 @@
 package starBallz;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 import javafx.application.Application;
 
 import javafx.event.ActionEvent;
@@ -15,6 +19,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
 
 public class MainMenu extends Application
@@ -26,6 +31,7 @@ public class MainMenu extends Application
 	private Button btnPlay = new Button("Jouer");
 	private Button btnRules = new Button("Règles");
 	private Button btnQuit = new Button("Quitter");
+	private Stage stage = null;
 	
 
 	public MainMenu()
@@ -36,11 +42,12 @@ public class MainMenu extends Application
 	public void start(Stage stage) throws Exception 
 	{
 		Scene scene = new Scene(root, 400,550, Color.BLACK);
-		stage.setResizable(false);
-		stage.setTitle("StarBallz");
+		this.stage = stage;
+		this.stage.setResizable(false);
+		this.stage.setTitle("StarBallz");
 		Image icon = new Image("icon.png");
-		stage.getIcons().add(icon);
-		stage.setScene(scene);
+		this.stage.getIcons().add(icon);
+		this.stage.setScene(scene);
 		this.gPane.setVgap(10);
 		this.gPane.setHgap(10);
 		
@@ -62,8 +69,8 @@ public class MainMenu extends Application
 		this.gPane.add(tileButtons, 8, 3);
 		
 		this.root.getChildren().add(gPane);
-		stage.setScene(scene);
-		stage.show();
+		this.stage.setScene(scene);
+		this.stage.show();
 	}
 
 	public static void main(String[] args) 
@@ -95,20 +102,22 @@ public class MainMenu extends Application
 			Group root2 = new Group();
 			GridPane gPane = new GridPane();
 			Scene myDialogScene = new Scene(root2,550,460,Color.BLACK);
-			//String[] stringTable = null;
-			//try {
-			//	stringTable = readTextFile(System.getProperty("user.dir") + "/rules");
-			//} catch (IOException e1) {
-			//	e1.printStackTrace();
-			//}
+			String[] stringTable = null;
+			try {
+				stringTable = readTextFile(System.getProperty("user.dir") + "/ressources/Rules.txt");
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 
-			//int i = 0;
-			//for (String string : stringTable)
-			//{
-			//	Text text = new Text(string);
-			//	gPane.add(text, 0, i);
-			//	i++;
-			//}
+			int i = 0;
+			for (String string : stringTable)
+			{
+				Text text = new Text(string);
+				text.setFill(Color.WHITE);
+				text.setStyle("-fx-font: 12 montalban;");
+				gPane.add(text, 0, i);
+				i++;
+			}
 
 			root2.getChildren().add(gPane);
 			myDialog.setScene(myDialogScene);
@@ -121,14 +130,40 @@ public class MainMenu extends Application
 	{
 		@Override public void handle(ActionEvent e) 
 		{
-			SongMenu sMenu = new SongMenu();
-			try {
-				sMenu.start(new Stage());
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			@SuppressWarnings("unused")
+			SongMenu sMenu = new SongMenu(stage);
 		}
 	
+	}
+	
+	public String[] readTextFile(String path) throws IOException
+	{
+
+		FileReader fileR = new FileReader(path);
+		BufferedReader textReader = new BufferedReader(fileR);
+		int fileLenght = 0;
+		while(textReader.readLine() != null)
+		{
+			fileLenght++;
+		}
+		textReader.close();
+		fileR.close();
+
+		FileReader fileR2 = new FileReader(path);
+		BufferedReader textReader2 = new BufferedReader(fileR2);
+
+		String[] textData = new String[fileLenght];
+
+		int i = 0;
+		while(i < fileLenght)
+		{
+			textData[i] = textReader2.readLine();
+			i++;
+		}
+
+		textReader2.close();
+		fileR2.close();
+
+		return textData;
 	}
 }

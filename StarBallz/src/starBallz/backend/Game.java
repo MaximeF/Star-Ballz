@@ -35,10 +35,16 @@ public class Game extends Application
 	private MediaPlayer mediaPlayer = null;
 	private Stage stage = null;
 
-	public Game(String fileName)
+	public Game(String fileName, Stage stage)
 	{
 		this.fileName = fileName;
 		this.gameEvent = new GameEvent(STAGEWIDTH, STAGEHEIGHT, this.fileName + ".txt");
+		try {
+			this.start(stage);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override

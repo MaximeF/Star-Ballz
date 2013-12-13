@@ -10,6 +10,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -19,23 +20,31 @@ public class SongMenu extends Application
 {
 	private static final int SONGNUMBER = 3;
 	private GridPane gridPane;
+	private Stage stage = null;
 
+	public SongMenu(Stage stage)
+	{
+		try {
+			this.start(stage);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	@Override
 	public void start(Stage stage) throws Exception
 	{
+		this.stage = stage;
 		Group root = new Group();
+		Image icon = new Image("icon.png");
+		this.stage.getIcons().add(icon);
 		this.gridPane = new GridPane();
-		Scene scene = new Scene(root, 500, 800, Color.BLACK);
+		this.gridPane.setVgap(10);
+		this.gridPane.setHgap(10);
+		Scene scene = new Scene(root, 500, 650, Color.BLACK);
 		addSongMenu();
-		stage.setResizable(false);
 		root.getChildren().add(this.gridPane);
-		stage.setScene(scene);
-		stage.show();
-	}
-
-	public static void main(String[] args)
-	{
-		launch(args);
+		this.stage.setScene(scene);
+		this.stage.show();
 	}
 
 	public void addSongMenu()
@@ -51,8 +60,9 @@ public class SongMenu extends Application
 				String highScore = reader.readLine();
 				String difficulty = reader.readLine();
 				reader.close();
-				Label label = new Label(fileName + difficulty + highScore);
-				label.setTextFill(Color.WHITE);
+				Label label = new Label("Chanson: " + fileName + " - Difficulté: " + difficulty + " - Meil. score: " + highScore);
+				label.setStyle("-fx-font: 10 montalban;");
+				label.setTextFill(Color.RED);
 				label.setId(fileName);
 				label.setOnMouseClicked(new songLabelClicked());
 				this.gridPane.add(label, 0, i);
@@ -70,15 +80,8 @@ public class SongMenu extends Application
 		{
 			Label label = (Label)e.getSource();
 			String fileName = label.getId();
-			Game game = new Game(fileName);
-			try {
-				Stage stage = new Stage();
-				game.start(stage);
-				stage = null;
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-			game = null;
+			@SuppressWarnings("unused")
+			Game game = new Game(fileName,stage);
 		}
 	}
 }
