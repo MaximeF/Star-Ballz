@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import com.sun.glass.ui.Window;
-
 import javafx.application.Application;
 
 import javafx.event.ActionEvent;
