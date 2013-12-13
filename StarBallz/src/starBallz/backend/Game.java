@@ -1,6 +1,12 @@
 package starBallz.backend;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Vector;
 
 import starBallz.GameEvent;
 import javafx.animation.AnimationTimer;
@@ -44,7 +50,6 @@ public class Game extends Application
 		this.canvas.setOnMouseMoved(new mouseMouvement());
 		Scene scene =  new Scene(group);
 		stage.setScene(scene);
-		//stage.setResizable(false);
 		stage.setOnCloseRequest(new CloseRequest());
 		stage.show();
 
@@ -73,6 +78,7 @@ public class Game extends Application
 
 	public void quitGame()
 	{
+		fillScore();
 		this.mediaPlayer.stop();
 		this.mediaPlayer = null;
 		this.animTimer.stop();
@@ -108,6 +114,37 @@ public class Game extends Application
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		this.gameEvent.draw(gc);
 
+	}
+
+	public void fillScore()
+	{
+		try {
+			BufferedReader fileReader = new BufferedReader(new FileReader("ressources/"+ this.fileName + ".txt"));
+
+			Vector<String> oldText = new Vector<String>();
+			fileReader.readLine();
+			String text = fileReader.readLine();
+			while(text != null)
+			{
+				oldText.addElement(text);
+				text = fileReader.readLine();
+			}
+
+
+			BufferedWriter fileWriter = new BufferedWriter(new FileWriter("ressources/"+ this.fileName + ".txt"));
+			fileWriter.write(""+this.gameEvent.getScore());
+			fileWriter.newLine();
+			for(String line : oldText)
+			{
+				fileWriter.write(String.valueOf(line));
+				fileWriter.newLine();
+			}
+			fileReader.close();
+			fileWriter.close();
+		} catch (IOException e) 
+		{
+
+		}
 	}
 
 	private class mouseMouvement implements EventHandler<MouseEvent>

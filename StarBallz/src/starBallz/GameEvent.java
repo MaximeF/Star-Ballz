@@ -36,6 +36,8 @@ public class GameEvent {
 	private float hitBallzNb = 0;
 	private float totalBallzNb = 0;
 	private float score = 0;
+	private int ballzIterator = 0;
+	private boolean running = true;
 
 
 	public GameEvent(int width, int height, String song)
@@ -111,7 +113,7 @@ public class GameEvent {
 			}
 
 
-			if (b.getyPos() + b.getSize() <= 0||b.getyPos() >= this.stageHeight)
+			if (b.getyPos() + b.getSize() <= 0||b.getyPos() - b.getSize() >= this.stageHeight)
 			{
 
 				this.ballzList.remove(b);
@@ -159,7 +161,8 @@ public class GameEvent {
 			String line = reader.readLine();
 			line = reader.readLine();
 			line = reader.readLine();
-			while (line != null) 
+
+			while(line != null)
 			{
 				try 
 				{
@@ -173,13 +176,12 @@ public class GameEvent {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		this.totalBallzNb = this.timeList.size();
+
+		this.totalBallzNb = this.timeList.size() - 1;
 	}
 
 	private class BallzSpawnTimer extends TimerTask
-	{
-		private int ballzIterator = 0;
+	{                 
 		private int timeIterator = 0;
 
 		@Override
@@ -205,28 +207,45 @@ public class GameEvent {
 
 	public void draw(GraphicsContext gc)
 	{
-		this.background.draw(gc);
-		gc.setGlobalAlpha(1);
-		this.engine.draw(gc);
-		this.platform.draw(gc);
-
-		for(int i = 0; i < this.ballzList.size(); i++)
+		if(this.running)
 		{
-			this.ballzList.get(i).draw(gc);
-		}
+			this.background.draw(gc);
+			gc.setGlobalAlpha(1);
+			this.engine.draw(gc);
+			this.platform.draw(gc);
 
-		gc.setFill(Color.RED);
-		Font font = new Font("Dialog", 16);
-		gc.setFont(font);
-		gc.fillText("Score "+this.getScore() +"% Hits "+ this.hitBallzNb + " Total "+ this.totalBallzNb, 20, 20);
+			for(int i = 0; i < this.ballzList.size(); i++)
+			{
+				this.ballzList.get(i).draw(gc);
+			}
+
+			gc.setFill(Color.RED);
+			Font font = new Font("Dialog", 16);
+			gc.setFont(font);
+			gc.fillText("Score "+this.getScore() +"% Hits "+ this.hitBallzNb + " Total "+ this.totalBallzNb, 20, 20);
+		}
+		else
+		{
+			gc.setFill(Color.RED);
+			Font font = new Font("Dialog", 16);
+			gc.setFont(font);
+			gc.fillText("Appuies sur Backspace pour retourner au menu", this.stageWidth/2 - 150, this.stageHeight/2);
+		}
 
 	}
 
 	public void refresh()
 	{
-		this.background.update();
-		this.engine.refresh();
-		this.move();
+		if(running)
+		{
+			this.background.update();
+			this.engine.refresh();
+			this.move();
+		}
+		if(this.ballzList.isEmpty() && this.ballzIterator == this.timeList.size() - 1)
+		{
+			running = false;
+		}
 
 	}
 
@@ -235,13 +254,13 @@ public class GameEvent {
 		return this.platform;
 
 	}
-	
+
 	public float getScore()
 	{
 		this.score = (this.hitBallzNb/ this.totalBallzNb)*100;
-		
+
 		return this.score;
-		
+
 	}
 
 	public void tick() 
@@ -254,6 +273,8 @@ public class GameEvent {
 			start = System.nanoTime();
 		}
 	}
+
+
 
 	public int getFPS() {
 		return FPS;
