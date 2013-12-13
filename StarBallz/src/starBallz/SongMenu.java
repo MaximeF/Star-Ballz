@@ -3,6 +3,8 @@ package starBallz;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
+import com.sun.glass.ui.Window;
+
 import starBallz.backend.Game;
 import starBallz.backend.Song;
 import javafx.application.Application;
@@ -11,6 +13,8 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -41,6 +45,7 @@ public class SongMenu extends Application
 		this.gridPane.setVgap(10);
 		this.gridPane.setHgap(10);
 		Scene scene = new Scene(root, 500, 650, Color.BLACK);
+		scene.setOnKeyPressed(new onKeyPressed());
 		addSongMenu();
 		root.getChildren().add(this.gridPane);
 		this.stage.setScene(scene);
@@ -82,6 +87,25 @@ public class SongMenu extends Application
 			String fileName = label.getId();
 			@SuppressWarnings("unused")
 			Game game = new Game(fileName,stage);
+		}
+	}
+	
+	private class onKeyPressed implements EventHandler<KeyEvent>
+	{
+		public void handle(KeyEvent e)
+		{
+			if (e.getCode() == KeyCode.BACK_SPACE)
+			{
+				Window.getFocusedWindow().close();
+				
+				MainMenu mMenu = new MainMenu();
+				try {
+					mMenu.start(new Stage());
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
 		}
 	}
 }

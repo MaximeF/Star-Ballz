@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.Vector;
 
 import starBallz.GameEvent;
+import starBallz.SongMenu;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -22,7 +23,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 public class Game extends Application
 {
@@ -56,7 +56,6 @@ public class Game extends Application
 		this.canvas.setOnMouseMoved(new mouseMouvement());
 		Scene scene =  new Scene(group);
 		stage.setScene(scene);
-		stage.setOnCloseRequest(new CloseRequest());
 		stage.show();
 
 		this.startMusic(this.fileName);
@@ -71,12 +70,14 @@ public class Game extends Application
 		this.animTimer.start();
 
 	}
+	
 	private class onKeyPressed implements EventHandler<KeyEvent>
 	{
 		public void handle(KeyEvent e)
 		{
 			if (e.getCode() == KeyCode.BACK_SPACE)
 			{
+				fillScore();
 				quitGame();
 			}
 		}
@@ -84,12 +85,12 @@ public class Game extends Application
 
 	public void quitGame()
 	{
-		fillScore();
 		this.mediaPlayer.stop();
 		this.mediaPlayer = null;
 		this.animTimer.stop();
 		this.gameEvent = null;
-		this.stage.close();
+		@SuppressWarnings("unused")
+		SongMenu sMenu = new SongMenu(stage);
 
 	}
 
@@ -164,15 +165,6 @@ public class Game extends Application
 		}
 	}
 
-	private class CloseRequest implements EventHandler<WindowEvent>
-	{
-
-		@Override
-		public void handle(WindowEvent arg0) {
-			quitGame();
-		}
-
-	}
 
 
 

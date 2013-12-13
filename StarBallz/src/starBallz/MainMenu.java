@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import com.sun.glass.ui.Window;
+
 import javafx.application.Application;
 
 import javafx.event.ActionEvent;
@@ -114,7 +116,7 @@ public class MainMenu extends Application
 			{
 				Text text = new Text(string);
 				text.setFill(Color.WHITE);
-				text.setStyle("-fx-font: 12 montalban;");
+				text.setStyle("-fx-font: 14 montalban;");
 				gPane.add(text, 0, i);
 				i++;
 			}

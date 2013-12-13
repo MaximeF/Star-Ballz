@@ -1,5 +1,26 @@
 
-Star Ballz est un jeu qui ressemble beaucoup à un casse-briques, 
-mais sans les briques. Le principe est de renvoyer les balles 
-qui arrivent du haut de la fenêtre. Le but est d'accumuler le 
-plus de points possibles en renvoyant le plus de balles possible. 
+Star Ballz est un jeu qui ressemble beaucoup à un 
+casse-briques, mais sans les briques. Le principe 
+est de renvoyer les balles qui arrivent du haut de 
+la fenêtre avec une plateforme qui bougesoit avec 
+les flèches directionnelles, soit avec la souris. 
+Le but est d'accumuler le plus de points possible 
+en renvoyant le plus de balles possible. 
+
+
+
+
+
+
+Développeurs: Patrick Arsenault
+                     Francis Chandonnet
+                     Maxime Forgues
+              
+         
+         
+         
+         
+         
+         
+Version 1.0
+2013
