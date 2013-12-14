@@ -10,8 +10,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 
 import com.sun.glass.ui.Window;
-
-import starBallz.backend.Game;
 import starBallz.backend.Song;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -32,7 +30,7 @@ public class SongMenu extends Application
 	private GridPane gridPane;
 	private Stage stage = null;
 
-	
+
 	/**
 	 * Constructeur de la classe SongMenu.
 	 * @param stage Le stage de l'application.
@@ -45,7 +43,7 @@ public class SongMenu extends Application
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Initialise, bâtit et place les éléments et la configuration du menu.
 	 * Affiche ensuite la scène.
@@ -72,7 +70,7 @@ public class SongMenu extends Application
 		this.stage.show();
 	}
 
-	
+
 	/**
 	 * Obtient les chansons disponibles dans l'énumération Song.
 	 * @see Song
@@ -120,7 +118,7 @@ public class SongMenu extends Application
 			Game game = new Game(fileName,stage);
 		}
 	}
-	
+
 	/**
 	 * Gestion de l'événement du clique sur la touche Backspace du clavier.
 	 * Retourne l'utilisateur au menu principal de l'application.
@@ -133,7 +131,7 @@ public class SongMenu extends Application
 			if (e.getCode() == KeyCode.BACK_SPACE)
 			{
 				Window.getFocusedWindow().close();
-				
+
 				MainMenu mMenu = new MainMenu();
 				try {
 					mMenu.start(new Stage());

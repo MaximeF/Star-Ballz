@@ -61,4 +61,18 @@ public class Background {
 			gc.drawImage(this.image, this.xPosition, (int)this.yPositions[i]);
 		}
 	}
+
+	public double getSpeed() {
+		return speed;
+	}
+
+	public int getxPosition() {
+		return xPosition;
+	}
+
+	public double[] getyPositions() {
+		return yPositions;
+	}
+
+	
 }

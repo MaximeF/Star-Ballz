@@ -2,10 +2,13 @@ package starBallz.backend.explosion;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-
+/**
+ * Classe servant à gérer les Explosions
+ * @author Maxime Forgues, Patrick Arsenault, Françis Chandonnet
+ *@see Explosion
+ */
 
 public class Engine {
 
@@ -13,6 +16,9 @@ public class Engine {
 	private List<Explosion> explosions;
 
 
+	/**
+	 * Constructor d'Explosion, initialise l'array d'explosion
+	 */
 	public Engine()
 	{
 
@@ -21,6 +27,13 @@ public class Engine {
 	}
 
 
+	/**
+	 * Ajouter une nouvelle explosion dans la liste l'explosion
+	 * @param x positon en x 
+	 * @param y positin
+	 * @param maxParticle nombre maximum de particle
+	 * @param color couleur de l'explosion
+	 */
 	public void setExplosion(int x, int y, int maxParticle,Color color)
 	{
 		this.explosions.add(new Explosion(x, y, maxParticle, color));
@@ -44,6 +57,10 @@ public class Engine {
 		}
 	}
 
+	/**
+	 * Dessine les particles de chaque explosion
+	 * @param graphics le GraphicsContext du canvas
+	 */
 	public void draw(GraphicsContext graphics)
 	{
 		for(int i = 0; i < this.explosions.size(); i++)
@@ -57,6 +74,17 @@ public class Engine {
 		}
 
 	}
+
+
+	/**
+	 * 
+	 * @return l'array d'explosions
+	 */
+	public List<Explosion> getExplosions() {
+		return explosions;
+	}
+
+
 
 
 }

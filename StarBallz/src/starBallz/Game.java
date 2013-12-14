@@ -1,4 +1,4 @@
-package starBallz.backend;
+package starBallz;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -8,8 +8,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Vector;
 
-import starBallz.GameEvent;
 import starBallz.SongMenu;
+import starBallz.backend.GameEvent;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -25,9 +25,14 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
+/**
+ * Classe servant de stage pour la fenêtre du jeu et son bon déroulement
+ * @author Maxime Forgues, Patrick Arsenault, Françis Chandonnet
+ *  
+ */
 public class Game extends Application
 {
-	private static final int STAGEHEIGHT = 650;
+	private static final int STAGEHEIGHT = 750;
 	private static final int STAGEWIDTH = 500;
 	private Canvas canvas = new Canvas(STAGEWIDTH, STAGEHEIGHT);
 	private GameEvent gameEvent;
@@ -36,6 +41,11 @@ public class Game extends Application
 	private MediaPlayer mediaPlayer = null;
 	private Stage stage = null;
 
+	/**
+	 * Constructeur de Game, créer un GameEvent et remplace la scene
+	 * @param fileName nom du fichier de la chanson à jouer
+	 * @param stage provenant de SongMenu, on remplace la scene
+	 */
 	public Game(String fileName, Stage stage)
 	{
 		this.fileName = fileName;
@@ -48,6 +58,9 @@ public class Game extends Application
 		}
 	}
 
+	/**
+	 * Contient la boucle servant à rafraichir le jeu et les éléments de la scene
+	 */
 	@Override
 	public void start(Stage stage) throws Exception
 	{	
@@ -73,6 +86,7 @@ public class Game extends Application
 		this.animTimer.start();
 
 	}
+
 	
 	private class onKeyPressed implements EventHandler<KeyEvent>
 	{
@@ -86,6 +100,9 @@ public class Game extends Application
 		}
 	}
 
+	/**
+	 * Appelé lorsqu'on quitte la fênetre, arrêter la musique et le jeu
+	 */
 	public void quitGame()
 	{
 		this.mediaPlayer.stop();
@@ -97,6 +114,10 @@ public class Game extends Application
 
 	}
 
+	/**
+	 * Joue un fichier son
+	 * @param fileName nom du fichier son
+	 */
 	public void startMusic(String fileName)
 	{
 		String source = new File("ressources/" + fileName + ".mp3").toURI().toString();
@@ -105,12 +126,18 @@ public class Game extends Application
 		mediaPlayer.play();
 	}
 
+	/**
+	 * Rafraichie les éléments du jeu et l'affiche sur la fenêtre
+	 */
 	public void loop() 
 	{
 		updateGame();
 		renderGame();
 	}
 
+	/**
+	 * Rafraichie tout ce qui est background
+	 */
 	public void updateGame() 
 	{
 
@@ -119,6 +146,9 @@ public class Game extends Application
 
 	}
 
+	/**
+	 * Affiche les éléments graphique sur le canvas
+	 */
 	public void renderGame() 
 	{
 		GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -126,6 +156,9 @@ public class Game extends Application
 
 	}
 
+	/**
+	 * Remplie le score dans un fichier text selon le mielleur score
+	 */
 	public void fillScore()
 	{
 		try {

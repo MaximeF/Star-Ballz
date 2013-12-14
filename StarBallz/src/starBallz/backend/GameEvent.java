@@ -1,4 +1,4 @@
-package starBallz;
+package starBallz.backend;
 
 
 import java.io.BufferedReader;
@@ -13,11 +13,13 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import starBallz.backend.Background;
-import starBallz.backend.Ballz;
-import starBallz.backend.UserPlatform;
 import starBallz.backend.explosion.Engine;
 
+/**
+ * Classe servent à gérer la logique du jeu
+ * @author Maxime Forgues, Patrick Arsenault, Françis Chandonnet
+ *
+ */
 public class GameEvent {
 
 	private int stageHeight;
@@ -42,6 +44,12 @@ public class GameEvent {
 	private boolean running = true;
 
 
+	/**
+	 * Initialise une partie en préparant les balles à être lancées
+	 * @param width la lageur de la fenêtre où jouer
+	 * @param height la hauter de la fenêtre où y jouer
+	 * @param song nom de la chanson à jouer
+	 */
 	public GameEvent(int width, int height, String song)
 	{
 		this.stageWidth = width;
@@ -53,6 +61,10 @@ public class GameEvent {
 
 	}
 
+	/**
+	 * Déplace chacun des boules et vérifie les collisions avec les bordures et la plateforme
+	 * Gère les rebonds et crée les explosions
+	 */
 	public void move()
 	{
 		if (this.platform.getxPos() < 0)
@@ -125,6 +137,11 @@ public class GameEvent {
 		}
 	}
 
+	/**
+	 * Vérifie les collisions entre la plateforme et les ballz
+	 * @param ballz une Balle
+	 * @return false si il n'y a aucun contact, sinon true
+	 */
 	public boolean plateformCollison(Ballz ballz)
 	{
 		if(ballz.getyPos() + ballz.getSize() <= this.platform.getyPos())
@@ -146,6 +163,9 @@ public class GameEvent {
 		return true;
 	}
 
+	/**
+	 * Crée une Ballz et l'ajoute dans l'array
+	 */
 	public void createBallz()
 	{
 		Random random = new Random();
@@ -155,6 +175,9 @@ public class GameEvent {
 		this.ballzList.add(ballz);
 	}
 
+	/**
+	 * Remplie la liste qui sert à déterminer quand lancer une Ballz
+	 */
 	public void fillTimeList()
 	{
 		BufferedReader reader;
@@ -208,6 +231,10 @@ public class GameEvent {
 		}
 	}
 
+	/**
+	 * Dessine les éléments graphiques sur le canvas
+	 * @param gc GraphicsContext du canvas
+	 */
 	public void draw(GraphicsContext gc)
 	{
 		if(this.running)
@@ -237,6 +264,9 @@ public class GameEvent {
 
 	}
 
+	/**
+	 * Met à jour les éléments logique du jeu et vérifie la fin d'une partie
+	 */
 	public void refresh()
 	{
 		if(running)
@@ -252,12 +282,20 @@ public class GameEvent {
 
 	}
 
+	/**
+	 * 
+	 * @return platform la plateform de l'utilisateur
+	 */
 	public UserPlatform getPlatform()
 	{
 		return this.platform;
 
 	}
 
+	/**
+	 * Le pourcentage de Ballz renvoyées
+	 * @return score le pointage de la partie
+	 */
 	public float getScore()
 	{
 		this.score = (this.hitBallzNb/ this.totalBallzNb)*100;
@@ -266,6 +304,9 @@ public class GameEvent {
 
 	}
 
+	/**
+	 * Calcule de nombre d'images par seconde
+	 */
 	public void tick() 
 	{
 		currentFPS++;
@@ -278,18 +319,70 @@ public class GameEvent {
 	}
 
 
-
+	/**
+	 * 
+	 * @return FPS nombre d'images par seconde
+	 */
 	public int getFPS() {
 		return FPS;
 	}
-	
+
+	/**
+	 * 
+	 * @return returnBallz le nombrede Ballz retournées
+	 */
 	public double getReturnedBallz() {
 		return this.returnedBallz;
 	}
-	
+
+	/**
+	 * 
+	 * @return ballzTotal le nombre Ballz total
+	 */
 	public double getBallzTotal() {
 		return this.ballzTotal;
 	}
+
+	/**
+	 * 
+	 * @return stageHieght la hauteur de la fenêtre
+	 */
+	public int getStageHeight() {
+		return stageHeight;
+	}
+
+	/**
+	 * 
+	 * @return stageWidth la largeur de la fenêtre
+	 */
+	public int getStageWidth() {
+		return stageWidth;
+	}
+
+	/**
+	 * 
+	 * @return sonfFileName le nom de la chanson
+	 */
+	public String getSongFileName() {
+		return songFileName;
+	}
+
+	/**
+	 * 
+	 * @return ballzList la liste de Ballz
+	 */
+	public ArrayList<Ballz> getBallzList() {
+		return ballzList;
+	}
+
+	/**
+	 * 
+	 * @return timeList la list contenant le temps de départ des Ballz
+	 */
+	public ArrayList<Integer> getTimeList() {
+		return timeList;
+	}
+	
 
 }
 

@@ -16,7 +16,9 @@ import java.util.List;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
-
+import starBallz.backend.explosion.test.EngineTest;
+import starBallz.backend.explosion.test.PartcleTest;
+import starBallz.backend.test.BackgroundTest;
 import starBallz.backend.test.BallzTest;
 import starBallz.backend.test.UserPlatformTest;
 
@@ -48,7 +50,7 @@ public class MainMenu extends Application
 	private Button btnRules = new Button("Règles");
 	private Button btnQuit = new Button("Quitter");
 	private Stage stage = null;
-	
+
 	/**
 	 * Constructeur de la classe MainMenu.
 	 */
@@ -74,7 +76,7 @@ public class MainMenu extends Application
 		this.stage.setScene(scene);
 		this.gPane.setVgap(10);
 		this.gPane.setHgap(10);
-		
+
 		this.btnPlay.setStyle("-fx-font: 22 montalban; -fx-base: #000000;");
 		this.btnPlay.setOnAction(new onMenuButtonPlayClick());
 		this.btnRules.setStyle("-fx-font: 22 montalban; -fx-base: #000000;");
@@ -84,14 +86,14 @@ public class MainMenu extends Application
 		this.btnPlay.setMaxSize(160, 60);
 		this.btnRules.setMaxSize(160, 60);
 		this.btnQuit.setMaxSize(160, 60);
-		
+
 		TilePane tileButtons = new TilePane(Orientation.VERTICAL);
 		tileButtons.setPadding(new Insets(20, 10, 20, 0));
 		tileButtons.setHgap(10.0);
 		tileButtons.setVgap(24.0);
 		tileButtons.getChildren().addAll(this.sballzImage, this.btnPlay, this.btnRules, this.btnQuit);
 		this.gPane.add(tileButtons, 8, 3);
-		
+
 		this.root.getChildren().add(gPane);
 		this.stage.setScene(scene);
 		this.stage.show();
@@ -103,8 +105,8 @@ public class MainMenu extends Application
 	public static void main(String[] args) 
 	{
 		JUnitCore junit = new JUnitCore(); 
-		Result result = junit.run(BallzTest.class, UserPlatformTest.class);
-		
+		Result result = junit.run(BallzTest.class, UserPlatformTest.class, EngineTest.class, PartcleTest.class, BackgroundTest.class);
+
 		if (result.getFailureCount() == 0)
 		{
 			String s = new File("").getAbsolutePath();
@@ -116,14 +118,14 @@ public class MainMenu extends Application
 		{
 			List<Failure> listeEchecs = result.getFailures();
 			System.out.println("Voici les tests qui échouent: ");
-			
+
 			for (Failure f: listeEchecs)
 			{
 				System.out.println(f.toString());
-			}		    
-		}     	
+			}                    
+		}             
 	}
-	
+
 	/**
 	 * Gestion de l'événement du clique sur le bouton Quitter. Ferme
 	 * l'application.
@@ -137,7 +139,7 @@ public class MainMenu extends Application
 		}
 
 	}
-	
+
 	/**
 	 * Gestion de l'événement du clique sur le bouton Règles. Affiche le but
 	 * du jeu ainsi que les instructions, les noms des développeurs, la 
@@ -195,9 +197,9 @@ public class MainMenu extends Application
 			@SuppressWarnings("unused")
 			SongMenu sMenu = new SongMenu(stage);
 		}
-	
+
 	}
-	
+
 	/**
 	 * Méthode servant à lire dans un fichier texte.
 	 * @param path Le chemin d'accès au fichier texte.
