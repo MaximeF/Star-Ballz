@@ -13,6 +13,7 @@ import starBallz.SongMenu;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -26,7 +27,7 @@ import javafx.stage.Stage;
 
 public class Game extends Application
 {
-	private static final int STAGEHEIGHT = 800;
+	private static final int STAGEHEIGHT = 650;
 	private static final int STAGEWIDTH = 500;
 	private Canvas canvas = new Canvas(STAGEWIDTH, STAGEHEIGHT);
 	private GameEvent gameEvent;
@@ -52,9 +53,11 @@ public class Game extends Application
 	{	
 		this.stage = stage;
 		Group group = new Group();
+		this.stage.centerOnScreen();
 		group.getChildren().addAll(this.canvas);
 		this.canvas.setOnMouseMoved(new mouseMouvement());
 		Scene scene =  new Scene(group);
+		scene.setCursor(Cursor.NONE);
 		stage.setScene(scene);
 		stage.show();
 
