@@ -1,5 +1,11 @@
 package starBallz;
 
+/**
+ * La classe SongMenu représente le menu de sélection de chansons du
+ * jeu. On peut y lancer une partie en choisissant une chanson.
+ * @author  Patrick Arsenault, Maxime Forgues, Francis Chandonnet
+ */
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 
@@ -26,6 +32,11 @@ public class SongMenu extends Application
 	private GridPane gridPane;
 	private Stage stage = null;
 
+	
+	/**
+	 * Constructeur de la classe SongMenu.
+	 * @param stage Le stage de l'application.
+	 */
 	public SongMenu(Stage stage)
 	{
 		try {
@@ -34,6 +45,14 @@ public class SongMenu extends Application
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Initialise, bâtit et place les éléments et la configuration du menu.
+	 * Affiche ensuite la scène.
+	 * @param stage Le stage de l'application.
+	 * @see onKeyPressed
+	 * @see #addSongMenu()
+	 */
 	@Override
 	public void start(Stage stage) throws Exception
 	{
@@ -41,17 +60,24 @@ public class SongMenu extends Application
 		Group root = new Group();
 		Image icon = new Image("icon.png");
 		this.stage.getIcons().add(icon);
+		this.stage.centerOnScreen();
 		this.gridPane = new GridPane();
 		this.gridPane.setVgap(10);
 		this.gridPane.setHgap(10);
 		Scene scene = new Scene(root, 500, 650, Color.BLACK);
 		scene.setOnKeyPressed(new onKeyPressed());
-		addSongMenu();
+		this.addSongMenu();
 		root.getChildren().add(this.gridPane);
 		this.stage.setScene(scene);
 		this.stage.show();
 	}
 
+	
+	/**
+	 * Obtient les chansons disponibles dans l'énumération Song.
+	 * @see Song
+	 * @see songLabelClicked
+	 */
 	public void addSongMenu()
 	{
 		Song[] songList = Song.values();
@@ -79,6 +105,11 @@ public class SongMenu extends Application
 		}
 	}
 
+	/**
+	 * Gestion de l'événement du clique sur le label de la chanson voulue.
+	 * Démarre une partie en fonction de la chanson voulue.
+	 * @see Game
+	 */
 	private class songLabelClicked implements EventHandler<MouseEvent>
 	{
 		public void handle(MouseEvent e)
@@ -90,6 +121,11 @@ public class SongMenu extends Application
 		}
 	}
 	
+	/**
+	 * Gestion de l'événement du clique sur la touche Backspace du clavier.
+	 * Retourne l'utilisateur au menu principal de l'application.
+	 * @see MainMenu
+	 */
 	private class onKeyPressed implements EventHandler<KeyEvent>
 	{
 		public void handle(KeyEvent e)

@@ -1,8 +1,24 @@
 package starBallz;
 
+/**
+ * La classe MainMenu représente le menu principal du jeu. On peut y 
+ * retrouver les règles, accéder au menu des chansons et quitter
+ * l'application.
+ * @author  Patrick Arsenault, Maxime Forgues, Francis Chandonnet
+ */
+
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
+
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
+
+import starBallz.backend.test.BallzTest;
+import starBallz.backend.test.UserPlatformTest;
 
 import javafx.application.Application;
 
@@ -33,17 +49,25 @@ public class MainMenu extends Application
 	private Button btnQuit = new Button("Quitter");
 	private Stage stage = null;
 	
-
+	/**
+	 * Constructeur de la classe MainMenu.
+	 */
 	public MainMenu()
 	{
 	}
 
+	/**
+	 * Initialise, bâtit et place les éléments et la configuration du menu.
+	 * Affiche ensuite la scène.
+	 * @param stage Le stage de l'application.
+	 */
 	@Override
 	public void start(Stage stage) throws Exception 
 	{
 		Scene scene = new Scene(root, 400,550, Color.BLACK);
 		this.stage = stage;
 		this.stage.setResizable(false);
+		this.stage.centerOnScreen();
 		this.stage.setTitle("StarBallz");
 		Image icon = new Image("icon.png");
 		this.stage.getIcons().add(icon);
@@ -73,11 +97,37 @@ public class MainMenu extends Application
 		this.stage.show();
 	}
 
+	/**
+	 * Lance les tests unitaires et l'application si ceux-ci passent.
+	 */
 	public static void main(String[] args) 
 	{
-		launch(args);
+		JUnitCore junit = new JUnitCore(); 
+		Result result = junit.run(BallzTest.class, UserPlatformTest.class);
+		
+		if (result.getFailureCount() == 0)
+		{
+			String s = new File("").getAbsolutePath();
+			System.out.println(s);
+
+			Application.launch(MainMenu.class, args);
+		}
+		else
+		{
+			List<Failure> listeEchecs = result.getFailures();
+			System.out.println("Voici les tests qui échouent: ");
+			
+			for (Failure f: listeEchecs)
+			{
+				System.out.println(f.toString());
+			}		    
+		}     	
 	}
 	
+	/**
+	 * Gestion de l'événement du clique sur le bouton Quitter. Ferme
+	 * l'application.
+	 */
 	private class onMenuButtonQuitClick implements EventHandler<ActionEvent>
 	{
 
@@ -88,6 +138,13 @@ public class MainMenu extends Application
 
 	}
 	
+	/**
+	 * Gestion de l'événement du clique sur le bouton Règles. Affiche le but
+	 * du jeu ainsi que les instructions, les noms des développeurs, la 
+	 * version du logiciel et l'année de création. Va chercher les régles
+	 * dans un fichier texte.
+	 * @see #readTextFile(String path)
+	 */
 	private class onMenuButtonRulesClick implements EventHandler<ActionEvent>
 	{
 		@Override public void handle(ActionEvent e) 
@@ -126,6 +183,11 @@ public class MainMenu extends Application
 		}
 	}
 
+	/**
+	 * Gestion de l'événement du clique sur le bouton Jouer. Affiche le menu
+	 * de sélection des chansons.
+	 * @see SongMenu
+	 */
 	private class onMenuButtonPlayClick implements EventHandler<ActionEvent>
 	{
 		@Override public void handle(ActionEvent e) 
@@ -136,6 +198,11 @@ public class MainMenu extends Application
 	
 	}
 	
+	/**
+	 * Méthode servant à lire dans un fichier texte.
+	 * @param path Le chemin d'accès au fichier texte.
+	 * @return Un tableau de Strings contenant les lignes du fichier texte.
+	 */
 	public String[] readTextFile(String path) throws IOException
 	{
 

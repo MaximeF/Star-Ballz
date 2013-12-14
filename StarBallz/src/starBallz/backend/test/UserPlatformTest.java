@@ -75,8 +75,39 @@ public class UserPlatformTest
 		UserPlatform platform = new UserPlatform(0, 0);
 		platform.setxPos(99999);
 		Assert.assertEquals(99999,platform.getxPos(),0);
-		Assert.assertEquals(0,platform.getxPos(),0);
+	}
+	
+	/**
+	 * Cette méthode teste si la fonction setyPos fonctionne si on passe une valeur négative en paramètre.
+	 */
+	@Test
+	public void setyPosNegativeTest()
+	{
+		UserPlatform platform = new UserPlatform(0, 0);
+		platform.setyPos(-10);
+		Assert.assertEquals(-10,platform.getyPos(),0);
+	}
+	
+	/**
+	 * Cette méthode teste si la fonction setyPos fonctionne si on passe la valeur zero en paramètre.
+	 */
+	@Test
+	public void setyPosZeroTest()
+	{
+		UserPlatform platform = new UserPlatform(0, 0);
+		platform.setyPos(0);
 		Assert.assertEquals(0,platform.getyPos(),0);
+	}
+	
+	/**
+	 * Cette méthode teste si la fonction setyPos fonctionne si on passe une grande valeur en paramètre.
+	 */
+	@Test
+	public void setyPosBigNumberTest()
+	{
+		UserPlatform platform = new UserPlatform(0, 0);
+		platform.setyPos(99999);
+		Assert.assertEquals(99999,platform.getyPos(),0);
 	}
 	
 }
